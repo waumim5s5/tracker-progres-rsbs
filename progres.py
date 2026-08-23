@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import shutil
 
-# --- TAMBAHAN UNTUK EXCEL & GAMBAR ---
+# --- MODUL UNTUK EXCEL & GAMBAR ---
 import openpyxl
 from openpyxl.drawing.image import Image as OpenPyxlImage
 from PIL import Image as PILImage
@@ -43,7 +43,7 @@ if 'database_tasks' not in st.session_state:
 
 
 # ==========================================
-# 2. SIDEBAR (PANEL INPUT & RESTORE)
+# 2. SIDEBAR (PANEL INPUT, HAPUS, & RESTORE)
 # ==========================================
 with st.sidebar:
     st.header("➕ Manajemen Data")
@@ -82,8 +82,69 @@ with st.sidebar:
                             st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = False
                             simpan_database()
                             st.success("Berhasil! Refresh halaman.")
+    
     st.divider()
 
+    # --- FITUR HAPUS DATA ---
+    st.header("🗑️ Hapus Data")
+    with st.expander("Panel Hapus Data (Hati-hati!)"):
+        if st.session_state.database_tasks:
+            jenis_hapus = st.radio("Apa yang ingin dihapus?", ["Area Seluruhnya", "Pekerjaan Utama", "Printilan (Checklist)"])
+            
+            with st.form("form_hapus"):
+                # Hapus Area
+                if jenis_hapus == "Area Seluruhnya":
+                    area_hapus = st.selectbox("Pilih Area yang DIHAPUS", list(st.session_state.database_tasks.keys()))
+                    if st.form_submit_button("🚨 HAPUS AREA INI"):
+                        del st.session_state.database_tasks[area_hapus]
+                        simpan_database()
+                        st.success(f"Area {area_hapus} terhapus!")
+                        st.rerun()
+
+                # Hapus Pekerjaan Utama
+                elif jenis_hapus == "Pekerjaan Utama":
+                    area_pilih = st.selectbox("Dari Area Mana?", list(st.session_state.database_tasks.keys()))
+                    if st.session_state.database_tasks[area_pilih]:
+                        pek_hapus = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih].keys()))
+                        if st.form_submit_button("🚨 HAPUS PEKERJAAN INI"):
+                            del st.session_state.database_tasks[area_pilih][pek_hapus]
+                            simpan_database()
+                            st.success(f"Pekerjaan {pek_hapus} terhapus!")
+                            st.rerun()
+                    else:
+                        st.write("Tidak ada pekerjaan di area ini.")
+                        st.form_submit_button("Hapus", disabled=True)
+
+                # Hapus Printilan
+                elif jenis_hapus == "Printilan (Checklist)":
+                    area_pilih2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
+                    if st.session_state.database_tasks[area_pilih2]:
+                        pek_pilih = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih2].keys()))
+                        if st.session_state.database_tasks[area_pilih2][pek_pilih]:
+                            prin_hapus = st.selectbox("Pilih Printilan", list(st.session_state.database_tasks[area_pilih2][pek_pilih].keys()))
+                            if st.form_submit_button("🚨 HAPUS PRINTILAN INI"):
+                                del st.session_state.database_tasks[area_pilih2][pek_pilih][prin_hapus]
+                                simpan_database()
+                                st.success(f"Printilan {prin_hapus} terhapus!")
+                                st.rerun()
+                        else:
+                            st.write("Tidak ada printilan.")
+                            st.form_submit_button("Hapus", disabled=True)
+                    else:
+                        st.write("Tidak ada pekerjaan.")
+                        st.form_submit_button("Hapus", disabled=True)
+        else:
+            st.info("Database kosong.")
+
+    st.divider()
+
+    # --- TOMBOL REFRESH ---
+    if st.button("🔄 Muat Ulang Halaman (Refresh)"):
+        st.rerun()
+
+    st.divider()
+
+    # --- FITUR RESTORE DATA (UPLOAD EXCEL) ---
     st.header("📂 Restore Data (Upload Excel)")
     file_excel_upload = st.file_uploader("Upload Excel Backup (*.xlsx)", type=["xlsx"])
     if file_excel_upload:
@@ -126,10 +187,8 @@ with st.sidebar:
                 selesai = sum(dict_printilan.values()) if total > 0 else 0
                 progres_persen = (selesai / total) if total > 0 else 0
                 
-                # Masukkan baris judul pekerjaan (Di sini foto akan ditempel nanti)
                 data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
                 
-                # Masukkan baris anak-anaknya (printilan)
                 for printilan, status in dict_printilan.items():
                     data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
         
@@ -138,57 +197,42 @@ with st.sidebar:
             file_excel_temp = os.path.join(DIR_SAAT_INI, "Laporan_Temp.xlsx")
             df.to_excel(file_excel_temp, index=False)
             
-            # --- PROSES MENEMPELKAN FOTO KE EXCEL ---
             try:
                 wb = openpyxl.load_workbook(file_excel_temp)
                 ws = wb.active
-                
-                # Tambah judul kolom untuk Foto
                 ws.cell(row=1, column=6, value="Dokumentasi (Foto)")
-                ws.column_dimensions['F'].width = 25 # Lebar kolom
+                ws.column_dimensions['F'].width = 25 
                 
                 daftar_foto = os.listdir(FOLDER_FOTO)
                 
-                # Cek setiap baris dari baris ke-2
                 for row_idx, row_data in enumerate(data_untuk_excel, start=2):
                     area = row_data["Area"]
                     pekerjaan = row_data["Pekerjaan Utama"]
                     item_printilan = row_data["Item Printilan"]
                     
-                    # Kita hanya menaruh foto di baris "PROGRES KESELURUHAN"
                     if item_printilan == "-":
-                        ws.row_dimensions[row_idx].height = 80 # Tinggikan baris
-                        
-                        # Cari foto yang nama file-nya diawali dengan area & pekerjaan tersebut
+                        ws.row_dimensions[row_idx].height = 80 
                         prefix = f"{area}_{pekerjaan}_".replace(" ", "_")
                         foto_ditemukan = None
                         
-                        # Cari foto terbaru/terkait
                         for f in daftar_foto:
                             if f.startswith(prefix):
                                 foto_ditemukan = os.path.join(FOLDER_FOTO, f)
                                 break
                         
-                        # Jika fotonya ada, perkecil dan tempelkan!
                         if foto_ditemukan:
                             try:
                                 img_pil = PILImage.open(foto_ditemukan)
-                                # Konversi ke RGB agar aman (mencegah error gambar transparansi/PNG)
                                 if img_pil.mode != 'RGB':
                                     img_pil = img_pil.convert('RGB')
-                                
-                                # Resize gambar agar tidak kebesaran di Excel (Lebar 150px)
                                 img_pil.thumbnail((150, 100)) 
-                                
                                 img_byte_arr = io.BytesIO()
                                 img_pil.save(img_byte_arr, format='JPEG')
-                                
                                 img_xl = OpenPyxlImage(img_byte_arr)
                                 ws.add_image(img_xl, f"F{row_idx}")
                             except Exception as e:
-                                pass # Jika file rusak, abaikan
+                                pass 
                 
-                # Simpan final
                 file_excel_final = os.path.join(DIR_SAAT_INI, "Laporan_Progres_Final.xlsx")
                 wb.save(file_excel_final)
                 
@@ -240,7 +284,6 @@ else:
                     foto_file = st.file_uploader("📸 Upload Foto Dokumentasi (Khusus dari HP)", type=["jpg", "png", "jpeg"])
                     submit_foto = st.form_submit_button("Simpan Foto")
                     if submit_foto and foto_file:
-                        # Penamaan foto distandarisasi agar mudah dicari oleh Excel nanti
                         nama_file = f"{area_terpilih}_{main_task}_{foto_file.name}".replace(" ", "_")
                         path_simpan = os.path.join(FOLDER_FOTO, nama_file)
                         with open(path_simpan, "wb") as f:
