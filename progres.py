@@ -4,11 +4,10 @@ import json
 import pandas as pd
 from datetime import datetime
 
-# Konfigurasi Halaman (Harus di baris paling atas)
 st.set_page_config(page_title="Tracker Proyek RS", page_icon="🏗️", layout="wide")
 
 # ==========================================
-# 1. PERSIAPAN FOLDER & FILE DATABASE (ABSOLUTE PATH)
+# 1. PERSIAPAN FOLDER & FILE DATABASE
 # ==========================================
 DIR_SAAT_INI = os.path.dirname(os.path.abspath(__file__))
 FILE_DATABASE = os.path.join(DIR_SAAT_INI, "database_proyek.json")
@@ -37,40 +36,33 @@ if 'database_tasks' not in st.session_state:
 
 
 # ==========================================
-# 2. SIDEBAR (PANEL INPUT, HAPUS, & EXPORT)
+# 2. SIDEBAR (PANEL INPUT, HAPUS, & RESTORE)
 # ==========================================
 with st.sidebar:
     st.header("➕ Manajemen Data")
     
-    # --- FORM TAMBAH AREA ---
     with st.expander("1. Tambah Area Baru"):
         with st.form("form_area"):
             area_baru = st.text_input("Nama Area (Contoh: RSBS LT 1)")
-            submit_area = st.form_submit_button("Tambah Area")
-            if submit_area and area_baru:
+            if st.form_submit_button("Tambah Area") and area_baru:
                 if area_baru not in st.session_state.database_tasks:
                     st.session_state.database_tasks[area_baru] = {}
                     simpan_database()
-                    st.success("Area Berhasil Ditambahkan!")
-                else:
-                    st.warning("Area tersebut sudah ada.")
+                    st.success("Berhasil! Refresh halaman.")
 
-    # --- FORM TAMBAH PEKERJAAN ---
     with st.expander("2. Tambah Pekerjaan Utama"):
         with st.form("form_pekerjaan"):
             if st.session_state.database_tasks:
                 pilih_area_1 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
-                pekerjaan_baru = st.text_input("Nama Pekerjaan (Contoh: Pasang Bata)")
-                submit_pek = st.form_submit_button("Tambah Pekerjaan")
-                if submit_pek and pekerjaan_baru:
+                pekerjaan_baru = st.text_input("Nama Pekerjaan")
+                if st.form_submit_button("Tambah Pekerjaan") and pekerjaan_baru:
                     if pekerjaan_baru not in st.session_state.database_tasks[pilih_area_1]:
                         st.session_state.database_tasks[pilih_area_1][pekerjaan_baru] = {}
                         simpan_database()
-                        st.success("Pekerjaan Berhasil Ditambahkan!")
+                        st.success("Berhasil! Refresh halaman.")
             else:
                 st.write("Buat area dulu.")
 
-    # --- FORM TAMBAH PRINTILAN (CHECKLIST) ---
     with st.expander("3. Tambah Printilan"):
         with st.form("form_printilan"):
             if st.session_state.database_tasks:
@@ -78,12 +70,11 @@ with st.sidebar:
                 if st.session_state.database_tasks[pilih_area_2]:
                     pilih_pekerjaan = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[pilih_area_2].keys()))
                     printilan_baru = st.text_input("Nama Printilan")
-                    submit_prin = st.form_submit_button("Tambah Printilan")
-                    if submit_prin and printilan_baru:
+                    if st.form_submit_button("Tambah Printilan") and printilan_baru:
                         if printilan_baru not in st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan]:
                             st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = False
                             simpan_database()
-                            st.success("Printilan Berhasil Ditambahkan!")
+                            st.success("Berhasil! Refresh halaman.")
                 else:
                     st.write("Buat pekerjaan dulu.")
             else:
@@ -91,69 +82,59 @@ with st.sidebar:
     
     st.divider()
 
-    # --- FITUR HAPUS DATA ---
-    st.header("🗑️ Hapus Data")
-    with st.expander("Panel Hapus Data (Hati-hati!)"):
-        if st.session_state.database_tasks:
-            # Pilihan Tingkat Hapus (Area / Pekerjaan / Printilan)
-            jenis_hapus = st.radio("Apa yang ingin dihapus?", ["Area Seluruhnya", "Pekerjaan Utama", "Printilan (Checklist)"])
-            
-            with st.form("form_hapus"):
-                # 1. Jika Hapus Area
-                if jenis_hapus == "Area Seluruhnya":
-                    area_hapus = st.selectbox("Pilih Area yang akan DIHAPUS", list(st.session_state.database_tasks.keys()))
-                    submit_hapus = st.form_submit_button("🚨 HAPUS AREA INI")
-                    if submit_hapus:
-                        del st.session_state.database_tasks[area_hapus]
-                        simpan_database()
-                        st.success(f"Area {area_hapus} berhasil dihapus!")
-
-                # 2. Jika Hapus Pekerjaan Utama
-                elif jenis_hapus == "Pekerjaan Utama":
-                    area_pilih = st.selectbox("Dari Area Mana?", list(st.session_state.database_tasks.keys()))
-                    if st.session_state.database_tasks[area_pilih]:
-                        pek_hapus = st.selectbox("Pilih Pekerjaan yang akan DIHAPUS", list(st.session_state.database_tasks[area_pilih].keys()))
-                        submit_hapus = st.form_submit_button("🚨 HAPUS PEKERJAAN INI")
-                        if submit_hapus:
-                            del st.session_state.database_tasks[area_pilih][pek_hapus]
-                            simpan_database()
-                            st.success(f"Pekerjaan {pek_hapus} berhasil dihapus!")
-                    else:
-                        st.write("Tidak ada pekerjaan di area ini.")
-                        submit_hapus = st.form_submit_button("Tutup", disabled=True)
-
-                # 3. Jika Hapus Printilan
-                elif jenis_hapus == "Printilan (Checklist)":
-                    area_pilih2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
-                    if st.session_state.database_tasks[area_pilih2]:
-                        pek_pilih = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih2].keys()))
-                        if st.session_state.database_tasks[area_pilih2][pek_pilih]:
-                            prin_hapus = st.selectbox("Pilih Printilan yang akan DIHAPUS", list(st.session_state.database_tasks[area_pilih2][pek_pilih].keys()))
-                            submit_hapus = st.form_submit_button("🚨 HAPUS PRINTILAN INI")
-                            if submit_hapus:
-                                del st.session_state.database_tasks[area_pilih2][pek_pilih][prin_hapus]
-                                simpan_database()
-                                st.success(f"Printilan {prin_hapus} berhasil dihapus!")
-                        else:
-                            st.write("Tidak ada printilan di pekerjaan ini.")
-                            submit_hapus = st.form_submit_button("Tutup", disabled=True)
-                    else:
-                        st.write("Tidak ada pekerjaan di area ini.")
-                        submit_hapus = st.form_submit_button("Tutup", disabled=True)
-        else:
-            st.info("Database masih kosong.")
+    # --- FITUR RESTORE DATA (UPLOAD EXCEL) ---
+    st.header("📂 Lanjutkan Progres (Restore)")
+    st.write("Upload file Excel (*.xlsx) yang pernah Anda unduh untuk memulihkan/melanjutkan progres.")
+    
+    file_excel_upload = st.file_uploader("Upload Laporan Excel (Backup)", type=["xlsx"])
+    if file_excel_upload:
+        if st.button("🔄 Pulihkan Data dari Excel"):
+            try:
+                # Membaca file excel yang diupload
+                df_upload = pd.read_excel(file_excel_upload)
+                
+                # Membuat struktur database baru
+                database_baru = {}
+                
+                for index, row in df_upload.iterrows():
+                    area = str(row['Area']).strip()
+                    pekerjaan = str(row['Pekerjaan Utama']).strip()
+                    printilan = str(row['Item Printilan']).strip()
+                    status_text = str(row['Status']).strip()
+                    
+                    # Buat area jika belum ada
+                    if area not in database_baru:
+                        database_baru[area] = {}
+                    
+                    # Buat pekerjaan jika belum ada
+                    if pekerjaan not in database_baru[area]:
+                        database_baru[area][pekerjaan] = {}
+                        
+                    # Masukkan printilan (Abaikan jika "PROGRES KESELURUHAN" atau item kosong "-")
+                    if printilan != "-" and printilan.lower() != "nan":
+                        is_selesai = True if status_text.lower() == "selesai" else False
+                        database_baru[area][pekerjaan][printilan] = is_selesai
+                
+                # Timpa database lama dengan yang baru dari excel
+                st.session_state.database_tasks = database_baru
+                simpan_database()
+                
+                st.success("✅ Data berhasil dipulihkan! Halaman akan dimuat ulang.")
+                st.rerun()
+                
+            except Exception as e:
+                st.error(f"Gagal memulihkan data. Pastikan format Excel sesuai. Error: {e}")
 
     st.divider()
     
-    # Tombol Refresh Manual
-    if st.button("🔄 Muat Ulang Halaman (Refresh)"):
+    if st.button("🔄 Refresh Tampilan"):
         st.rerun()
 
     st.divider()
     
     # --- FITUR EXPORT KE EXCEL ---
-    st.header("📊 Export Laporan")
-    if st.button("Siapkan File Excel"):
+    st.header("📊 Export Laporan (Backup)")
+    if st.button("Siapkan File Excel (Backup)"):
         data_untuk_excel = []
         for area, dict_pekerjaan in st.session_state.database_tasks.items():
             for pekerjaan, dict_printilan in dict_pekerjaan.items():
@@ -171,7 +152,7 @@ with st.sidebar:
             file_excel = os.path.join(DIR_SAAT_INI, "Laporan_Progres.xlsx")
             df.to_excel(file_excel, index=False)
             with open(file_excel, "rb") as f:
-                st.download_button(label="📥 Unduh Laporan Excel", data=f, file_name=f"Laporan_RSBS_{datetime.now().strftime('%Y%m%d')}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+                st.download_button(label="📥 Unduh Backup Laporan Excel", data=f, file_name=f"Laporan_RSBS_{datetime.now().strftime('%Y%m%d')}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 
 # ==========================================
 # 3. HALAMAN UTAMA (TRACKER)
@@ -179,7 +160,7 @@ with st.sidebar:
 st.title("🏗️ Aplikasi Tracker Progres Proyek")
 
 if not st.session_state.database_tasks:
-    st.info("👈 Data kosong. Tambah Area di panel kiri.")
+    st.info("👈 Data kosong. Tambah data di panel kiri, atau Upload file Backup Excel Anda.")
 else:
     area_terpilih = st.selectbox("📍 Pilih Area Pekerjaan:", list(st.session_state.database_tasks.keys()))
     st.divider()
@@ -212,7 +193,7 @@ else:
                 
                 st.write("---")
                 with st.form(f"form_foto_{main_task}", clear_on_submit=True):
-                    foto_file = st.file_uploader("📸 Upload Foto Dokumentasi (Khusus dari HP)", type=["jpg", "png", "jpeg"])
+                    foto_file = st.file_uploader("📸 Upload Foto Dokumentasi", type=["jpg", "png", "jpeg"])
                     submit_foto = st.form_submit_button("Simpan Foto")
                     if submit_foto and foto_file:
                         nama_file = f"{area_terpilih}_{main_task}_{foto_file.name}".replace(" ", "_")
