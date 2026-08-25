@@ -25,20 +25,29 @@ if not os.path.exists(FOLDER_FOTO):
 
 def simpan_database():
     with open(FILE_DATABASE, 'w') as f:
-        json.dump(st.session_state.database_tasks, f, indent=4)
+        json.dump({
+            "tasks": st.session_state.database_tasks,
+            "workers": st.session_state.database_workers
+        }, f, indent=4)
 
 def muat_database():
     if os.path.exists(FILE_DATABASE):
         try:
             with open(FILE_DATABASE, 'r') as f:
-                return json.load(f)
+                data = json.load(f)
+                if "tasks" not in data:
+                    return {"tasks": data, "workers": {}}
+                return data
         except:
-            return {}
+            return {"tasks": {}, "workers": {}}
     else:
-        return {}
+        return {"tasks": {}, "workers": {}}
 
-if 'database_tasks' not in st.session_state:
-    st.session_state.database_tasks = muat_database()
+if 'db_loaded' not in st.session_state:
+    db = muat_database()
+    st.session_state.database_tasks = db["tasks"]
+    st.session_state.database_workers = db["workers"]
+    st.session_state.db_loaded = True
     simpan_database()
 
 
@@ -92,7 +101,6 @@ with st.sidebar:
             jenis_hapus = st.radio("Apa yang ingin dihapus?", ["Area Seluruhnya", "Pekerjaan Utama", "Printilan (Checklist)"])
             
             with st.form("form_hapus"):
-                # Hapus Area
                 if jenis_hapus == "Area Seluruhnya":
                     area_hapus = st.selectbox("Pilih Area yang DIHAPUS", list(st.session_state.database_tasks.keys()))
                     if st.form_submit_button("🚨 HAPUS AREA INI"):
@@ -101,13 +109,15 @@ with st.sidebar:
                         st.success(f"Area {area_hapus} terhapus!")
                         st.rerun()
 
-                # Hapus Pekerjaan Utama
                 elif jenis_hapus == "Pekerjaan Utama":
                     area_pilih = st.selectbox("Dari Area Mana?", list(st.session_state.database_tasks.keys()))
                     if st.session_state.database_tasks[area_pilih]:
                         pek_hapus = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih].keys()))
                         if st.form_submit_button("🚨 HAPUS PEKERJAAN INI"):
                             del st.session_state.database_tasks[area_pilih][pek_hapus]
+                            # Hapus juga data tukang & peladen terkait
+                            st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_tukang", None)
+                            st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_peladen", None)
                             simpan_database()
                             st.success(f"Pekerjaan {pek_hapus} terhapus!")
                             st.rerun()
@@ -115,7 +125,6 @@ with st.sidebar:
                         st.write("Tidak ada pekerjaan di area ini.")
                         st.form_submit_button("Hapus", disabled=True)
 
-                # Hapus Printilan
                 elif jenis_hapus == "Printilan (Checklist)":
                     area_pilih2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
                     if st.session_state.database_tasks[area_pilih2]:
@@ -138,7 +147,6 @@ with st.sidebar:
 
     st.divider()
 
-    # --- TOMBOL REFRESH ---
     if st.button("🔄 Muat Ulang Halaman (Refresh)"):
         st.rerun()
 
@@ -152,19 +160,33 @@ with st.sidebar:
             try:
                 df_upload = pd.read_excel(file_excel_upload)
                 database_baru = {}
+                workers_baru = {}
+                
                 for index, row in df_upload.iterrows():
                     area = str(row['Area']).strip()
                     pekerjaan = str(row['Pekerjaan Utama']).strip()
+                    
+                    # Deteksi Format Kolom Baru (Tukang & Peladen)
+                    tukang = str(row.get('Nama Tukang', '')).strip()
+                    peladen = str(row.get('Nama Peladen', '')).strip()
+                    
                     printilan = str(row['Item Printilan']).strip()
                     status_text = str(row['Status']).strip()
                     
                     if area not in database_baru: database_baru[area] = {}
                     if pekerjaan not in database_baru[area]: database_baru[area][pekerjaan] = {}
+                    
+                    # Pulihkan nama tukang & peladen
+                    if tukang and tukang.lower() != "nan" and tukang != "-":
+                        workers_baru[f"{area}_{pekerjaan}_tukang"] = tukang
+                    if peladen and peladen.lower() != "nan" and peladen != "-":
+                        workers_baru[f"{area}_{pekerjaan}_peladen"] = peladen
                         
                     if printilan != "-" and printilan.lower() != "nan":
                         database_baru[area][pekerjaan][printilan] = (status_text.lower() == "selesai")
                 
                 st.session_state.database_tasks = database_baru
+                st.session_state.database_workers = workers_baru
                 simpan_database()
                 st.success("✅ Berhasil dipulihkan!")
                 st.rerun()
@@ -174,11 +196,9 @@ with st.sidebar:
     st.divider()
     
     # ==========================================
-    # FITUR EXPORT EXCEL DENGAN FOTO INSERT
+    # FITUR EXPORT EXCEL (TUKANG, PELADEN & FOTO)
     # ==========================================
     st.header("📊 Export Laporan (+ Foto)")
-    st.write("Unduh Excel lengkap dengan fotonya.")
-    
     if st.button("Siapkan File Excel Lengkap"):
         data_untuk_excel = []
         for area, dict_pekerjaan in st.session_state.database_tasks.items():
@@ -187,10 +207,16 @@ with st.sidebar:
                 selesai = sum(dict_printilan.values()) if total > 0 else 0
                 progres_persen = (selesai / total) if total > 0 else 0
                 
-                data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
+                # Ambil nama Tukang dan Peladen
+                nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "-")
+                nama_peladen = st.session_state.database_workers.get(f"{area}_{pekerjaan}_peladen", "-")
                 
+                # Baris Induk
+                data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
+                
+                # Baris Anak (Printilan)
                 for printilan, status in dict_printilan.items():
-                    data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
+                    data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
         
         if data_untuk_excel:
             df = pd.DataFrame(data_untuk_excel)
@@ -200,8 +226,10 @@ with st.sidebar:
             try:
                 wb = openpyxl.load_workbook(file_excel_temp)
                 ws = wb.active
-                ws.cell(row=1, column=6, value="Dokumentasi (Foto)")
-                ws.column_dimensions['F'].width = 25 
+                
+                # Karena kolom tambah 1 lagi, posisi foto bergeser ke kolom H (ke-8)
+                ws.cell(row=1, column=8, value="Dokumentasi (Foto)")
+                ws.column_dimensions['H'].width = 25 
                 
                 daftar_foto = os.listdir(FOLDER_FOTO)
                 
@@ -229,7 +257,7 @@ with st.sidebar:
                                 img_byte_arr = io.BytesIO()
                                 img_pil.save(img_byte_arr, format='JPEG')
                                 img_xl = OpenPyxlImage(img_byte_arr)
-                                ws.add_image(img_xl, f"F{row_idx}")
+                                ws.add_image(img_xl, f"H{row_idx}") # Insert di kolom H
                             except Exception as e:
                                 pass 
                 
@@ -260,6 +288,29 @@ else:
     else:
         for main_task, sub_tasks in pekerjaan_utama_dict.items():
             with st.expander(f"🛠️ {main_task}", expanded=True):
+                
+                # --- INPUT NAMA TUKANG & PELADEN (SEBELAHAN) ---
+                kunci_tukang = f"{area_terpilih}_{main_task}_tukang"
+                kunci_peladen = f"{area_terpilih}_{main_task}_peladen"
+                
+                tukang_saat_ini = st.session_state.database_workers.get(kunci_tukang, "")
+                peladen_saat_ini = st.session_state.database_workers.get(kunci_peladen, "")
+                
+                def simpan_tukang(k=kunci_tukang):
+                    st.session_state.database_workers[k] = st.session_state[f"input_tukang_{k}"]
+                    simpan_database()
+                    
+                def simpan_peladen(k=kunci_peladen):
+                    st.session_state.database_workers[k] = st.session_state[f"input_peladen_{k}"]
+                    simpan_database()
+                
+                # Membuat 2 kolom sejajar
+                col_t, col_p = st.columns(2)
+                with col_t:
+                    st.text_input("👷 Nama Tukang:", value=tukang_saat_ini, key=f"input_tukang_{kunci_tukang}", on_change=simpan_tukang, placeholder="Ketik nama Tukang & Enter")
+                with col_p:
+                    st.text_input("👷‍♂️ Nama Peladen (Knek):", value=peladen_saat_ini, key=f"input_peladen_{kunci_peladen}", on_change=simpan_peladen, placeholder="Ketik nama Peladen & Enter")
+                
                 if not sub_tasks:
                     st.write("*Belum ada checklist.*")
                 else:
@@ -281,11 +332,11 @@ else:
                 
                 st.write("---")
                 with st.form(f"form_foto_{main_task}", clear_on_submit=True):
-                    foto_file = st.file_uploader("📸 Upload Foto Dokumentasi (Khusus dari HP)", type=["jpg", "png", "jpeg"])
+                    foto_file = st.file_uploader("📸 Upload Foto Dokumentasi", type=["jpg", "png", "jpeg"])
                     submit_foto = st.form_submit_button("Simpan Foto")
                     if submit_foto and foto_file:
                         nama_file = f"{area_terpilih}_{main_task}_{foto_file.name}".replace(" ", "_")
                         path_simpan = os.path.join(FOLDER_FOTO, nama_file)
                         with open(path_simpan, "wb") as f:
                             f.write(foto_file.getbuffer())
-                        st.success("✅ Foto dokumentasi tersimpan dan terhubung dengan laporan Excel!")
+                        st.success("✅ Foto tersimpan dan terhubung dengan laporan Excel!")
