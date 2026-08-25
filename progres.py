@@ -57,6 +57,7 @@ if 'db_loaded' not in st.session_state:
 with st.sidebar:
     st.header("➕ Manajemen Data")
     
+    # --- FORM 1: TAMBAH AREA ---
     with st.expander("1. Tambah Area Baru"):
         with st.form("form_area"):
             area_baru = st.text_input("Nama Area")
@@ -66,31 +67,39 @@ with st.sidebar:
                     simpan_database()
                     st.success("Berhasil! Refresh halaman.")
 
+    # --- FORM 2: TAMBAH PEKERJAAN ---
     with st.expander("2. Tambah Pekerjaan Utama"):
-        with st.form("form_pekerjaan"):
-            if st.session_state.database_tasks:
-                pilih_area_1 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
+        if st.session_state.database_tasks:
+            # Pilihan Area dikeluarkan dari Form agar bisa responsif
+            pilih_area_1 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()), key="sb_area_pek")
+            with st.form("form_pekerjaan"):
                 pekerjaan_baru = st.text_input("Nama Pekerjaan")
                 if st.form_submit_button("Tambah Pekerjaan") and pekerjaan_baru:
                     if pekerjaan_baru not in st.session_state.database_tasks[pilih_area_1]:
                         st.session_state.database_tasks[pilih_area_1][pekerjaan_baru] = {}
                         simpan_database()
                         st.success("Berhasil! Refresh halaman.")
-            else:
-                st.write("Buat area dulu.")
+        else:
+            st.write("Buat area dulu.")
 
+    # --- FORM 3: TAMBAH PRINTILAN ---
     with st.expander("3. Tambah Printilan"):
-        with st.form("form_printilan"):
-            if st.session_state.database_tasks:
-                pilih_area_2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
-                if st.session_state.database_tasks[pilih_area_2]:
-                    pilih_pekerjaan = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[pilih_area_2].keys()))
+        if st.session_state.database_tasks:
+            # Pilihan Area & Pekerjaan dikeluarkan dari Form agar berjenjang & responsif
+            pilih_area_2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()), key="sb_area_prin")
+            if st.session_state.database_tasks[pilih_area_2]:
+                pilih_pekerjaan = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[pilih_area_2].keys()), key="sb_pek_prin")
+                with st.form("form_printilan"):
                     printilan_baru = st.text_input("Nama Printilan")
                     if st.form_submit_button("Tambah Printilan") and printilan_baru:
                         if printilan_baru not in st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan]:
                             st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = False
                             simpan_database()
                             st.success("Berhasil! Refresh halaman.")
+            else:
+                st.write("Buat pekerjaan dulu.")
+        else:
+            st.write("Buat area dulu.")
     
     st.divider()
 
@@ -100,48 +109,44 @@ with st.sidebar:
         if st.session_state.database_tasks:
             jenis_hapus = st.radio("Apa yang ingin dihapus?", ["Area Seluruhnya", "Pekerjaan Utama", "Printilan (Checklist)"])
             
-            with st.form("form_hapus"):
-                if jenis_hapus == "Area Seluruhnya":
-                    area_hapus = st.selectbox("Pilih Area yang DIHAPUS", list(st.session_state.database_tasks.keys()))
-                    if st.form_submit_button("🚨 HAPUS AREA INI"):
-                        del st.session_state.database_tasks[area_hapus]
-                        simpan_database()
-                        st.success(f"Area {area_hapus} terhapus!")
-                        st.rerun()
+            # Form Hapus juga dilepas agar pilihan berjenjang langsung berubah
+            if jenis_hapus == "Area Seluruhnya":
+                area_hapus = st.selectbox("Pilih Area yang DIHAPUS", list(st.session_state.database_tasks.keys()), key="del_area")
+                if st.button("🚨 HAPUS AREA INI"):
+                    del st.session_state.database_tasks[area_hapus]
+                    simpan_database()
+                    st.success(f"Area {area_hapus} terhapus!")
+                    st.rerun()
 
-                elif jenis_hapus == "Pekerjaan Utama":
-                    area_pilih = st.selectbox("Dari Area Mana?", list(st.session_state.database_tasks.keys()))
-                    if st.session_state.database_tasks[area_pilih]:
-                        pek_hapus = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih].keys()))
-                        if st.form_submit_button("🚨 HAPUS PEKERJAAN INI"):
-                            del st.session_state.database_tasks[area_pilih][pek_hapus]
-                            # Hapus juga data tukang & peladen terkait
-                            st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_tukang", None)
-                            st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_peladen", None)
+            elif jenis_hapus == "Pekerjaan Utama":
+                area_pilih = st.selectbox("Dari Area Mana?", list(st.session_state.database_tasks.keys()), key="del_area_pek")
+                if st.session_state.database_tasks[area_pilih]:
+                    pek_hapus = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih].keys()), key="del_pek")
+                    if st.button("🚨 HAPUS PEKERJAAN INI"):
+                        del st.session_state.database_tasks[area_pilih][pek_hapus]
+                        st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_tukang", None)
+                        st.session_state.database_workers.pop(f"{area_pilih}_{pek_hapus}_peladen", None)
+                        simpan_database()
+                        st.success(f"Pekerjaan {pek_hapus} terhapus!")
+                        st.rerun()
+                else:
+                    st.write("Tidak ada pekerjaan di area ini.")
+
+            elif jenis_hapus == "Printilan (Checklist)":
+                area_pilih2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()), key="del_area_prin")
+                if st.session_state.database_tasks[area_pilih2]:
+                    pek_pilih = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih2].keys()), key="del_pek_prin")
+                    if st.session_state.database_tasks[area_pilih2][pek_pilih]:
+                        prin_hapus = st.selectbox("Pilih Printilan", list(st.session_state.database_tasks[area_pilih2][pek_pilih].keys()), key="del_prin")
+                        if st.button("🚨 HAPUS PRINTILAN INI"):
+                            del st.session_state.database_tasks[area_pilih2][pek_pilih][prin_hapus]
                             simpan_database()
-                            st.success(f"Pekerjaan {pek_hapus} terhapus!")
+                            st.success(f"Printilan {prin_hapus} terhapus!")
                             st.rerun()
                     else:
-                        st.write("Tidak ada pekerjaan di area ini.")
-                        st.form_submit_button("Hapus", disabled=True)
-
-                elif jenis_hapus == "Printilan (Checklist)":
-                    area_pilih2 = st.selectbox("Pilih Area", list(st.session_state.database_tasks.keys()))
-                    if st.session_state.database_tasks[area_pilih2]:
-                        pek_pilih = st.selectbox("Pilih Pekerjaan", list(st.session_state.database_tasks[area_pilih2].keys()))
-                        if st.session_state.database_tasks[area_pilih2][pek_pilih]:
-                            prin_hapus = st.selectbox("Pilih Printilan", list(st.session_state.database_tasks[area_pilih2][pek_pilih].keys()))
-                            if st.form_submit_button("🚨 HAPUS PRINTILAN INI"):
-                                del st.session_state.database_tasks[area_pilih2][pek_pilih][prin_hapus]
-                                simpan_database()
-                                st.success(f"Printilan {prin_hapus} terhapus!")
-                                st.rerun()
-                        else:
-                            st.write("Tidak ada printilan.")
-                            st.form_submit_button("Hapus", disabled=True)
-                    else:
-                        st.write("Tidak ada pekerjaan.")
-                        st.form_submit_button("Hapus", disabled=True)
+                        st.write("Tidak ada printilan.")
+                else:
+                    st.write("Tidak ada pekerjaan.")
         else:
             st.info("Database kosong.")
 
@@ -165,18 +170,14 @@ with st.sidebar:
                 for index, row in df_upload.iterrows():
                     area = str(row['Area']).strip()
                     pekerjaan = str(row['Pekerjaan Utama']).strip()
-                    
-                    # Deteksi Format Kolom Baru (Tukang & Peladen)
                     tukang = str(row.get('Nama Tukang', '')).strip()
                     peladen = str(row.get('Nama Peladen', '')).strip()
-                    
                     printilan = str(row['Item Printilan']).strip()
                     status_text = str(row['Status']).strip()
                     
                     if area not in database_baru: database_baru[area] = {}
                     if pekerjaan not in database_baru[area]: database_baru[area][pekerjaan] = {}
                     
-                    # Pulihkan nama tukang & peladen
                     if tukang and tukang.lower() != "nan" and tukang != "-":
                         workers_baru[f"{area}_{pekerjaan}_tukang"] = tukang
                     if peladen and peladen.lower() != "nan" and peladen != "-":
@@ -207,14 +208,11 @@ with st.sidebar:
                 selesai = sum(dict_printilan.values()) if total > 0 else 0
                 progres_persen = (selesai / total) if total > 0 else 0
                 
-                # Ambil nama Tukang dan Peladen
                 nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "-")
                 nama_peladen = st.session_state.database_workers.get(f"{area}_{pekerjaan}_peladen", "-")
                 
-                # Baris Induk
                 data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
                 
-                # Baris Anak (Printilan)
                 for printilan, status in dict_printilan.items():
                     data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
         
@@ -227,7 +225,6 @@ with st.sidebar:
                 wb = openpyxl.load_workbook(file_excel_temp)
                 ws = wb.active
                 
-                # Karena kolom tambah 1 lagi, posisi foto bergeser ke kolom H (ke-8)
                 ws.cell(row=1, column=8, value="Dokumentasi (Foto)")
                 ws.column_dimensions['H'].width = 25 
                 
@@ -257,7 +254,7 @@ with st.sidebar:
                                 img_byte_arr = io.BytesIO()
                                 img_pil.save(img_byte_arr, format='JPEG')
                                 img_xl = OpenPyxlImage(img_byte_arr)
-                                ws.add_image(img_xl, f"H{row_idx}") # Insert di kolom H
+                                ws.add_image(img_xl, f"H{row_idx}") 
                             except Exception as e:
                                 pass 
                 
@@ -289,7 +286,6 @@ else:
         for main_task, sub_tasks in pekerjaan_utama_dict.items():
             with st.expander(f"🛠️ {main_task}", expanded=True):
                 
-                # --- INPUT NAMA TUKANG & PELADEN (SEBELAHAN) ---
                 kunci_tukang = f"{area_terpilih}_{main_task}_tukang"
                 kunci_peladen = f"{area_terpilih}_{main_task}_peladen"
                 
@@ -304,7 +300,6 @@ else:
                     st.session_state.database_workers[k] = st.session_state[f"input_peladen_{k}"]
                     simpan_database()
                 
-                # Membuat 2 kolom sejajar
                 col_t, col_p = st.columns(2)
                 with col_t:
                     st.text_input("👷 Nama Tukang:", value=tukang_saat_ini, key=f"input_tukang_{kunci_tukang}", on_change=simpan_tukang, placeholder="Ketik nama Tukang & Enter")
