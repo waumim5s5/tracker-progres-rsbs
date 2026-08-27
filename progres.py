@@ -4,6 +4,8 @@ import json
 import pandas as pd
 from datetime import datetime
 import shutil
+
+# --- MODUL UNTUK EXCEL & GAMBAR ---
 import openpyxl
 from openpyxl.drawing.image import Image as OpenPyxlImage
 from PIL import Image as PILImage
@@ -142,18 +144,119 @@ with st.sidebar:
             st.info("Database kosong.")
 
     st.divider()
+
     if st.button("🔄 Muat Ulang Halaman (Refresh)"):
         st.rerun()
+
     st.divider()
 
-    # --- FITUR EXPORT EXCEL & RESTORE (Tetap ada seperti sebelumnya) ---
+    # --- FITUR RESTORE DATA (UPLOAD EXCEL) ---
+    st.header("📂 Restore Data (Upload Excel)")
+    file_excel_upload = st.file_uploader("Upload Excel Backup (*.xlsx)", type=["xlsx"])
+    if file_excel_upload:
+        if st.button("🔄 Pulihkan Data"):
+            try:
+                df_upload = pd.read_excel(file_excel_upload)
+                database_baru = {}
+                workers_baru = {}
+                
+                for index, row in df_upload.iterrows():
+                    area = str(row['Area']).strip()
+                    pekerjaan = str(row['Pekerjaan Utama']).strip()
+                    tukang = str(row.get('Nama Tukang', '')).strip()
+                    peladen = str(row.get('Nama Peladen', '')).strip()
+                    printilan = str(row['Item Printilan']).strip()
+                    status_text = str(row['Status']).strip()
+                    
+                    if area not in database_baru: database_baru[area] = {}
+                    if pekerjaan not in database_baru[area]: database_baru[area][pekerjaan] = {}
+                    
+                    if tukang and tukang.lower() != "nan" and tukang != "-":
+                        workers_baru[f"{area}_{pekerjaan}_tukang"] = tukang
+                    if peladen and peladen.lower() != "nan" and peladen != "-":
+                        workers_baru[f"{area}_{pekerjaan}_peladen"] = peladen
+                        
+                    if printilan != "-" and printilan.lower() != "nan":
+                        database_baru[area][pekerjaan][printilan] = (status_text.lower() == "selesai")
+                
+                st.session_state.database_tasks = database_baru
+                st.session_state.database_workers = workers_baru
+                simpan_database()
+                st.success("✅ Berhasil dipulihkan!")
+                st.rerun()
+            except Exception as e:
+                st.error(f"Gagal memulihkan: {e}")
+
+    st.divider()
+    
+    # --- FITUR EXPORT EXCEL (+ FOTO) ---
     st.header("📊 Export Laporan (+ Foto)")
     if st.button("Siapkan File Excel Lengkap"):
-        # Logika export excel sama seperti sebelumnya (disederhanakan untuk tampilan sini)
-        st.info("Fitur Export Excel berjalan di latar belakang...")
-        # (Seluruh kode openpyxl dan pandas Anda tetap bekerja sempurna di sini)
-        # --- (Potongan kode excel disembunyikan agar script fokus pada WA, Anda bisa menempelkan logika openpyxl sebelumnya di blok ini jika diperlukan) ---
-        pass
+        data_untuk_excel = []
+        for area, dict_pekerjaan in st.session_state.database_tasks.items():
+            for pekerjaan, dict_printilan in dict_pekerjaan.items():
+                total = len(dict_printilan)
+                selesai = sum(dict_printilan.values()) if total > 0 else 0
+                progres_persen = (selesai / total) if total > 0 else 0
+                
+                nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "-")
+                nama_peladen = st.session_state.database_workers.get(f"{area}_{pekerjaan}_peladen", "-")
+                
+                data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
+                
+                for printilan, status in dict_printilan.items():
+                    data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
+        
+        if data_untuk_excel:
+            df = pd.DataFrame(data_untuk_excel)
+            file_excel_temp = os.path.join(DIR_SAAT_INI, "Laporan_Temp.xlsx")
+            df.to_excel(file_excel_temp, index=False)
+            
+            try:
+                wb = openpyxl.load_workbook(file_excel_temp)
+                ws = wb.active
+                
+                ws.cell(row=1, column=8, value="Dokumentasi (Foto)")
+                ws.column_dimensions['H'].width = 25 
+                
+                daftar_foto = os.listdir(FOLDER_FOTO)
+                
+                for row_idx, row_data in enumerate(data_untuk_excel, start=2):
+                    area = row_data["Area"]
+                    pekerjaan = row_data["Pekerjaan Utama"]
+                    item_printilan = row_data["Item Printilan"]
+                    
+                    if item_printilan == "-":
+                        ws.row_dimensions[row_idx].height = 80 
+                        prefix = f"{area}_{pekerjaan}_".replace(" ", "_")
+                        foto_ditemukan = None
+                        
+                        for f in daftar_foto:
+                            if f.startswith(prefix):
+                                foto_ditemukan = os.path.join(FOLDER_FOTO, f)
+                                break
+                        
+                        if foto_ditemukan:
+                            try:
+                                img_pil = PILImage.open(foto_ditemukan)
+                                if img_pil.mode != 'RGB':
+                                    img_pil = img_pil.convert('RGB')
+                                img_pil.thumbnail((150, 100)) 
+                                img_byte_arr = io.BytesIO()
+                                img_pil.save(img_byte_arr, format='JPEG')
+                                img_xl = OpenPyxlImage(img_byte_arr)
+                                ws.add_image(img_xl, f"H{row_idx}") 
+                            except Exception as e:
+                                pass 
+                
+                file_excel_final = os.path.join(DIR_SAAT_INI, "Laporan_Progres_Final.xlsx")
+                wb.save(file_excel_final)
+                
+                with open(file_excel_final, "rb") as f:
+                    st.download_button(label="📥 Unduh Excel (+ Foto)", data=f, file_name=f"Laporan_Lengkap_{datetime.now().strftime('%Y%m%d')}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+            
+            except Exception as e:
+                st.error(f"Gagal memproses foto ke Excel: {e}")
 
 
 # ==========================================
@@ -226,13 +329,12 @@ else:
                         st.success("✅ Foto tersimpan!")
 
 # ==========================================
-# 4. GENERATOR LAPORAN WHATSAPP (BARU)
+# 4. GENERATOR LAPORAN WHATSAPP 
 # ==========================================
 st.divider()
 st.header("📱 Buat Laporan WhatsApp")
-st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil centang Anda. Anda bisa mengeditnya sebelum di-copy.")
+st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil centang Anda. Anda bisa mengeditnya sebelum di-copy ke WA.")
 
-# Fungsi pembuat format WhatsApp
 def generate_wa_text():
     lines = []
     lines.append("*ITEM PEKERJAAN DAN PROGRES*")
@@ -240,7 +342,6 @@ def generate_wa_text():
     
     area_idx = 1
     for area, dict_pekerjaan in st.session_state.database_tasks.items():
-        # Tambahkan nama area
         lines.append(f"{area_idx}. *{area}*")
         
         for pekerjaan, dict_printilan in dict_pekerjaan.items():
@@ -248,25 +349,27 @@ def generate_wa_text():
             selesai = sum(dict_printilan.values()) if total > 0 else 0
             persen = int((selesai / total) * 100) if total > 0 else 0
             
-            # Jika tidak ada rincian printilan, anggap sebagai pekerjaan tunggal
+            # Ambil nama tukang/peladen jika ada
+            nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "")
+            pekerja_info = f" ({nama_tukang})" if nama_tukang else ""
+            
+            # Jika tidak ada rincian printilan
             if total == 0:
-                lines.append(f"👷🏻‍♂️ {pekerjaan} (0%)")
+                lines.append(f"👷🏻‍♂️ Pekerjaan {pekerjaan}{pekerja_info} ({persen}%)")
             else:
-                # Jika ada rincian, tampilkan sebagai judul ruangan/pekerjaan
+                # Jika ada rincian (Format Ruangan / Sub-bab)
                 lines.append(f"• *{pekerjaan}* ({persen}%)")
                 
                 prin_idx = 1
                 for printilan, is_done in dict_printilan.items():
-                    # Jika selesai beri tanda centang ✅, jika belum biarkan kosong
                     status_simbol = "✅" if is_done else ""
                     lines.append(f"   {prin_idx}. {printilan} {status_simbol}")
                     prin_idx += 1
                     
-        lines.append("") # Beri jarak kosong antar area
+        lines.append("")
         area_idx += 1
         
     return "\n".join(lines)
 
-# Menampilkan kotak teks area untuk diedit/copy
 teks_laporan_wa = generate_wa_text()
-st.text_area("Kolom Copy-Paste (Bisa diedit)", value=teks_laporan_wa, height=400)
+st.text_area("Kolom Copy-Paste Laporan WA", value=teks_laporan_wa, height=400)
