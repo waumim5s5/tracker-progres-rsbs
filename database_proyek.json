@@ -2,31 +2,31 @@
   "tasks": {
     "Lantai 1": {
       "Pekerjaan Pengecatan WF": {
-        "Proses pengecatan (95%)": false
+        "Proses pengecatan ": false
       },
       "Pekerjaan Pengelasan WF": {
-        "Proses pengelasan (90%)": false
+        "Proses pengelasan ": false
       }
     },
     "Lantai 2": {
       "Pekerjaan Pemasangan Kaca": {
-        "Proses pemasangan (95%)": false
+        "Proses pemasangan ": false
       },
       "Pemasangan Rangka Plafon PVC": {
-        "Proses pemasangan (20%)": false
+        "Proses pemasangan ": false
       }
     },
     "Lantai 3": {
       "Ruang operator": {
         "Pekerjaan pemasangan kramik": true,
-        "Plamir dinding + cat (80%)": false,
+        "Plamir dinding + cat ": false,
         "Pemasangan rangka plafond": true,
         "Pemasangan acp plafon": true,
         "Lubang kaca operator": false,
         "Pembuatan shaft baru (partisi)": false,
-        "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (45%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Pemasangan kusen": true,
         "Pemasangan pintu ruang operator": true,
         "Pemindahan jalur gas, kompresor": false,
@@ -57,7 +57,7 @@
         "Pemasangan hebel sisi luar lorong lama": true,
         "Plester + Aci dinding hebel sisi luar lorong lama": true,
         "Pengecatan dinding sisi lorong luar lama": true,
-        "Pembongkaran shaft, pintu dan dinding (25%)": false,
+        "Pembongkaran shaft, pintu dan dinding ": false,
         "Pemasangan dinding hebel sekat OK dan sisi lorong baru": true,
         "Plester sekat OK dan sisi lorong baru": false,
         "Aci sekat OK dan sisi lorong baru": false,
@@ -68,12 +68,12 @@
         "Pekerjaan pemasangan kramik": true,
         "Kompon dinding": true,
         "Pemasangan plafon pvc": true,
-        "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (30%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Kusen pintu": true,
         "Pemasangan pintu": true,
-        "Pengcatan dinding dalam (86%)": false,
+        "Pengcatan dinding dalam ": false,
         "Pemasangan pipa pembuangan AC": false,
         "Pemasangan Unit AC": false
       },
@@ -83,25 +83,25 @@
         "Pembongkaran dinding": true,
         "Pemasangan kolom praktis area jalan lorong": true,
         "Pemasangan kramik": true,
-        "Pemasangan cuterwall (85%)": false,
-        "Pengecatan dinding lorong O.K (40%)": false,
-        "Pemasangan kaca (68%)": false,
-        "Pemasangan plafon pvc (15%)": false,
-        "Pemasangan kalsiboard bagian atas (10%)": false,
-        "Pemasangan rangka plafon (20%)": false
+        "Pemasangan cuterwall ": false,
+        "Pengecatan dinding lorong O.K ": false,
+        "Pemasangan kaca ": false,
+        "Pemasangan plafon pvc ": false,
+        "Pemasangan kalsiboard bagian atas ": false,
+        "Pemasangan rangka plafon ": false
       },
       "R. Tindakan Endoscopy": {
         "Pekerjaan pemasangan timbal": true,
-        "Pemasangan kalsiboard dinding (85%)": false,
-        "Pemasangan kramik (0%)": false,
-        "Plamir dinding (0%)": false,
+        "Pemasangan kalsiboard dinding ": false,
+        "Pemasangan kramik ": false,
+        "Plamir dinding ": false,
         "Pemasangan plafon pvc": true,
-        "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (20%)": false,
-        "Pemasangan kusen sliding door baja (50%)": false,
-        "Pemasangan selang oksigen (30%)": false,
-        "Pembuatan pintu baja slidingdoor (80%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
+        "Pemasangan kusen sliding door baja ": false,
+        "Pemasangan selang oksigen ": false,
+        "Pembuatan pintu baja slidingdoor ": false,
         "Pemasangan cor lantai finish keramik/vinyl": false,
         "Pemasangan pipa pembuangan AC": false,
         "Pemasangan unit AC": false
@@ -119,44 +119,44 @@
       },
       "Ruang admin & Tunggu": {
         "Pekerjaan pemasangan kramik": true,
-        "Plamir dinding (80%)": false,
+        "Plamir dinding ": false,
         "Pengecatan dinding": false,
         "Pemasangan plafon": true,
-        "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (15%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Pemasangan pipa pembuangan AC": false,
         "Pemasangan unit AC": false
       },
       "Ruang cuci alat": {
         "Pekerjaan pemasangan kramik": true,
-        "Plamir dinding (95%)": false,
+        "Plamir dinding ": false,
         "Pemasangan plafon pvc": true,
-        "Pemasangan stop kontak (15%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (40%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Pemasangan pintu": true,
-        "Pemasangan sink cuci alat (0%)": false
+        "Pemasangan sink cuci alat ": false
       },
       "Ruang simpan alat": {
         "Pekerjaan pemasangan kramik": true,
-        "Plamir dinding (85%)": false,
+        "Plamir dinding ": false,
         "Pemasangan plafon pvc": true,
-        "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (20%)": false,
+        "Pemasangan stop kontak ": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Pemasangan pintu": true
       },
       "Ruang observasi": {
         "Pekerjaan pemasangan kramik": true,
-        "Plamir dinding (40%)": false,
+        "Plamir dinding ": false,
         "Pengecatan dinding": false,
         "Pemasangan plafon pvc": true,
         "Pemasangan stop kontak (0%)": false,
-        "Pemasangan lampu (0%)": false,
-        "Kabel kelistrikan (25%)": false,
+        "Pemasangan lampu ": false,
+        "Kabel kelistrikan ": false,
         "Pemasangan pintu": true,
-        "Pemasangan pipa oksigen (30%)": false,
+        "Pemasangan pipa oksigen ": false,
         "Pemasangan pembuangan ac": false,
         "Pemasangan unit AC": false
       }
@@ -166,11 +166,11 @@
         "Pemasangan lesplank": true,
         "Pengecatan lesplank": true,
         "Bongkar andang": true,
-        "Pemasangan plafon luar (96%)": false,
+        "Pemasangan plafon luar ": false,
         "Pemasangan sealant": true,
-        "Pemasangan flinkoet (30%)": false,
+        "Pemasangan flinkoet ": false,
         "Pemasangan talang air": true,
-        "Pembersihan lokasi (50%)": false
+        "Pembersihan lokasi ": false
       }
     },
     "AREA PARKIRAN": {
@@ -178,8 +178,8 @@
         "Pekerjaan pemasangan kalsi": true,
         "Pekerjaan plester lantai": true,
         "Pemasangan pipa air & keran": true,
-        "Palmir dinding kalsi (0%)": false,
-        "Pengecat an lantai kamar mandi (20%)": false
+        "Palmir dinding kalsi ": false,
+        "Pengecat an lantai kamar mandi ": false
       }
     }
   },
