@@ -88,7 +88,8 @@ with st.sidebar:
                     printilan_baru = st.text_input("Nama Printilan")
                     if st.form_submit_button("Tambah Printilan") and printilan_baru:
                         if printilan_baru not in st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan]:
-                            st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = False
+                            # DISINI DIUBAH: Default progress printilan adalah angka 0, bukan False
+                            st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = 0
                             simpan_database()
                             st.success("Berhasil! Refresh halaman.")
             else:
@@ -144,10 +145,8 @@ with st.sidebar:
             st.info("Database kosong.")
 
     st.divider()
-
     if st.button("🔄 Muat Ulang Halaman (Refresh)"):
         st.rerun()
-
     st.divider()
 
     # --- FITUR RESTORE DATA (UPLOAD EXCEL) ---
@@ -166,7 +165,7 @@ with st.sidebar:
                     tukang = str(row.get('Nama Tukang', '')).strip()
                     peladen = str(row.get('Nama Peladen', '')).strip()
                     printilan = str(row['Item Printilan']).strip()
-                    status_text = str(row['Status']).strip()
+                    progres_val = float(row.get('Progres (%)', 0))
                     
                     if area not in database_baru: database_baru[area] = {}
                     if pekerjaan not in database_baru[area]: database_baru[area][pekerjaan] = {}
@@ -177,7 +176,8 @@ with st.sidebar:
                         workers_baru[f"{area}_{pekerjaan}_peladen"] = peladen
                         
                     if printilan != "-" and printilan.lower() != "nan":
-                        database_baru[area][pekerjaan][printilan] = (status_text.lower() == "selesai")
+                        # Restore angka progres ke database
+                        database_baru[area][pekerjaan][printilan] = int(progres_val * 100)
                 
                 st.session_state.database_tasks = database_baru
                 st.session_state.database_workers = workers_baru
@@ -195,17 +195,28 @@ with st.sidebar:
         data_untuk_excel = []
         for area, dict_pekerjaan in st.session_state.database_tasks.items():
             for pekerjaan, dict_printilan in dict_pekerjaan.items():
-                total = len(dict_printilan)
-                selesai = sum(dict_printilan.values()) if total > 0 else 0
-                progres_persen = (selesai / total) if total > 0 else 0
+                
+                # Perhitungan Progres Rata-rata dari Slider
+                jumlah_printilan = len(dict_printilan)
+                if jumlah_printilan > 0:
+                    total_progres = 0
+                    for val in dict_printilan.values():
+                        # Keamanan: ubah True/False jadi angka 100/0 jika ada data lama
+                        if isinstance(val, bool): val = 100 if val else 0
+                        total_progres += val
+                    progres_rata = (total_progres / (jumlah_printilan * 100))
+                else:
+                    progres_rata = 0
                 
                 nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "-")
                 nama_peladen = st.session_state.database_workers.get(f"{area}_{pekerjaan}_peladen", "-")
                 
-                data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_persen})
+                data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": "-", "Status": "PROGRES KESELURUHAN", "Progres (%)": progres_rata})
                 
-                for printilan, status in dict_printilan.items():
-                    data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": printilan, "Status": "Selesai" if status else "Belum", "Progres (%)": 1.0 if status else 0.0})
+                for printilan, val in dict_printilan.items():
+                    if isinstance(val, bool): val = 100 if val else 0
+                    status_text = "Selesai" if val == 100 else f"Proses {val}%"
+                    data_untuk_excel.append({"Area": area, "Pekerjaan Utama": pekerjaan, "Nama Tukang": nama_tukang, "Nama Peladen": nama_peladen, "Item Printilan": printilan, "Status": status_text, "Progres (%)": (val / 100)})
         
         if data_untuk_excel:
             df = pd.DataFrame(data_untuk_excel)
@@ -259,15 +270,23 @@ with st.sidebar:
                 st.error(f"Gagal memproses foto ke Excel: {e}")
 
 
-# ==========================================
+# ============================================================
 # 3. HALAMAN UTAMA (TRACKER)
-# ==========================================
+# ============================================================
 st.title("🏗️ Aplikasi Tracker Progres Proyek")
 
 if not st.session_state.database_tasks:
     st.info("👈 Data kosong. Tambah data di panel kiri.")
 else:
-    area_terpilih = st.selectbox("📍 Pilih Area Pekerjaan:", list(st.session_state.database_tasks.keys()))
+    daftar_area = list(st.session_state.database_tasks.keys())
+    if "ingat_area" not in st.session_state or st.session_state.ingat_area not in daftar_area:
+        st.session_state.ingat_area = daftar_area[0]
+        
+    area_terpilih = st.selectbox(
+        "📍 Pilih Area Pekerjaan:", 
+        daftar_area,
+        key="ingat_area"
+    )
     st.divider()
 
     pekerjaan_utama_dict = st.session_state.database_tasks[area_terpilih]
@@ -301,21 +320,47 @@ else:
                 if not sub_tasks:
                     st.write("*Belum ada checklist.*")
                 else:
+                    # Menghitung Rata-Rata Progres dari Slider Printilan
                     total_printilan = len(sub_tasks)
-                    printilan_selesai = sum(sub_tasks.values())
-                    persentase = int((printilan_selesai / total_printilan) * 100) if total_printilan > 0 else 0
+                    total_skor = 0
+                    
+                    for p_val in sub_tasks.values():
+                        if isinstance(p_val, bool): p_val = 100 if p_val else 0
+                        total_skor += p_val
+                        
+                    persentase = int(total_skor / total_printilan) if total_printilan > 0 else 0
                     
                     st.progress(persentase / 100)
-                    st.markdown(f"**Progres Pekerjaan: {persentase}%**  *( {printilan_selesai} / {total_printilan} Selesai )*")
+                    st.markdown(f"**Progres Pekerjaan: {persentase}%**")
                     st.write("---")
                     
-                    for printilan, is_done in sub_tasks.items():
-                        unik_key = f"{area_terpilih}_{main_task}_{printilan}"
+                    # === UPDATE: LOOP UNTUK SLIDER PRINTILAN ===
+                    for printilan, val in sub_tasks.items():
+                        
+                        # Pengaman jika database lama terbaca bool (True/False)
+                        if isinstance(val, bool):
+                            val = 100 if val else 0
+                            st.session_state.database_tasks[area_terpilih][main_task][printilan] = val
+                            
+                        unik_key = f"sld_{area_terpilih}_{main_task}_{printilan}"
+                        
                         def update_status(a=area_terpilih, p=main_task, pr=printilan, key=unik_key):
                             st.session_state.database_tasks[a][p][pr] = st.session_state[key]
                             simpan_database()
                         
-                        st.checkbox(printilan, value=is_done, key=unik_key, on_change=update_status)
+                        c1, c2 = st.columns([1, 10])
+                        with c1:
+                            if val == 100:
+                                st.markdown("<h4 style='color:green; margin-top:20px;'>✅</h4>", unsafe_allow_html=True)
+                            else:
+                                st.markdown("<h4 style='color:gray; margin-top:20px;'>⚙️</h4>", unsafe_allow_html=True)
+                        with c2:
+                            st.slider(
+                                printilan, 
+                                min_value=0, max_value=100, value=val, step=5,
+                                key=unik_key, 
+                                on_change=update_status
+                            )
                 
                 st.write("---")
                 with st.form(f"form_foto_{main_task}", clear_on_submit=True):
@@ -333,7 +378,7 @@ else:
 # ==========================================
 st.divider()
 st.header("📱 Buat Laporan WhatsApp")
-st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil centang Anda. Anda bisa mengeditnya sebelum di-copy ke WA.")
+st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil geser slider Anda.")
 
 def generate_wa_text():
     lines = []
@@ -345,25 +390,33 @@ def generate_wa_text():
         lines.append(f"{area_idx}. *{area}*")
         
         for pekerjaan, dict_printilan in dict_pekerjaan.items():
-            total = len(dict_printilan)
-            selesai = sum(dict_printilan.values()) if total > 0 else 0
-            persen = int((selesai / total) * 100) if total > 0 else 0
+            jumlah_printilan = len(dict_printilan)
             
-            # Ambil nama tukang/peladen jika ada
+            # Hitung persentase utama dari slider anak
+            if jumlah_printilan > 0:
+                total_skor = 0
+                for v in dict_printilan.values():
+                    if isinstance(v, bool): v = 100 if v else 0
+                    total_skor += v
+                persen = int(total_skor / jumlah_printilan)
+            else:
+                persen = 0
+            
             nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "")
             pekerja_info = f" ({nama_tukang})" if nama_tukang else ""
             
-            # Jika tidak ada rincian printilan
-            if total == 0:
+            if jumlah_printilan == 0:
                 lines.append(f"👷🏻‍♂️ Pekerjaan {pekerjaan}{pekerja_info} ({persen}%)")
             else:
-                # Jika ada rincian (Format Ruangan / Sub-bab)
-                lines.append(f"• *{pekerjaan}* ({persen}%)")
+                lines.append(f"• *{pekerjaan}*{pekerja_info} ({persen}%)")
                 
                 prin_idx = 1
-                for printilan, is_done in dict_printilan.items():
-                    status_simbol = "✅" if is_done else ""
-                    lines.append(f"   {prin_idx}. {printilan} {status_simbol}")
+                for printilan, val in dict_printilan.items():
+                    if isinstance(val, bool): val = 100 if val else 0
+                    status_simbol = "✅" if val == 100 else ""
+                    
+                    # Menampilkan angka % di sebelah nama printilan
+                    lines.append(f"   {prin_idx}. {printilan} ({val}%){status_simbol}")
                     prin_idx += 1
                     
         lines.append("")
@@ -371,5 +424,6 @@ def generate_wa_text():
         
     return "\n".join(lines)
 
-teks_laporan_wa = generate_wa_text()
-st.text_area("Kolom Copy-Paste Laporan WA", value=teks_laporan_wa, height=400)
+if st.session_state.database_tasks:
+    teks_laporan_wa = generate_wa_text()
+    st.text_area("Kolom Copy-Paste Laporan WA", value=teks_laporan_wa, height=400)
