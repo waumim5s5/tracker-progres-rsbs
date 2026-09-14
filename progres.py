@@ -5,7 +5,7 @@ import pandas as pd
 from datetime import datetime
 import shutil
 
---- MODUL UNTUK EXCEL & GAMBAR ---
+#--- MODUL UNTUK EXCEL & GAMBAR ---
 import openpyxl
 from openpyxl.drawing.image import Image as OpenPyxlImage
 from PIL import Image as PILImage
