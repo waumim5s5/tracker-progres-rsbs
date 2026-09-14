@@ -13,9 +13,9 @@ import io
 
 st.set_page_config(page_title="Tracker Proyek RS", page_icon="🏗️", layout="wide")
 
-==========================================
-1. PERSIAPAN FOLDER & FILE DATABASE
-==========================================
+##==========================================
+##1. PERSIAPAN FOLDER & FILE DATABASE
+##==========================================
 DIR_SAAT_INI = os.path.dirname(os.path.abspath(file))
 FILE_DATABASE = os.path.join(DIR_SAAT_INI, "database_proyek.json")
 FOLDER_FOTO = os.path.join(DIR_SAAT_INI, "foto_progres")
@@ -51,9 +51,9 @@ st.session_state.db_loaded = True
 simpan_database()
 
 
-==========================================
-2. SIDEBAR (PANEL INPUT, HAPUS, & RESTORE)
-==========================================
+##==========================================
+##2. SIDEBAR (PANEL INPUT, HAPUS, & RESTORE)
+##==========================================
 with st.sidebar:
 st.header("➕ Manajemen Data")
 
@@ -270,9 +270,9 @@ except Exception as e:
 st.error(f"Gagal memproses foto ke Excel: {e}")
 
 
-============================================================
-3. HALAMAN UTAMA (TRACKER)
-============================================================
+##============================================================
+##3. HALAMAN UTAMA (TRACKER)
+##============================================================
 st.title("🏗️ Aplikasi Tracker Progres Proyek")
 
 if not st.session_state.database_tasks:
@@ -373,9 +373,9 @@ with open(path_simpan, "wb") as f:
 f.write(foto_file.getbuffer())
 st.success("✅ Foto tersimpan!")
 
-==========================================
-4. GENERATOR LAPORAN WHATSAPP
-==========================================
+##==========================================
+##4. GENERATOR LAPORAN WHATSAPP
+##==========================================
 st.divider()
 st.header("📱 Buat Laporan WhatsApp")
 st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil geser slider Anda.")
