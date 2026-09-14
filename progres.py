@@ -3,13 +3,9 @@ import os
 import json
 import pandas as pd
 from datetime import datetime
-import shutil
 
-# --- MODUL UNTUK EXCEL & GAMBAR ---
+# --- MODUL UNTUK EXCEL ---
 import openpyxl
-from openpyxl.drawing.image import Image as OpenPyxlImage
-from PIL import Image as PILImage
-import io
 
 st.set_page_config(page_title="Tracker Proyek RS", page_icon="🏗️", layout="wide")
 
@@ -18,10 +14,6 @@ st.set_page_config(page_title="Tracker Proyek RS", page_icon="🏗️", layout="
 # ==========================================
 DIR_SAAT_INI = os.path.dirname(os.path.abspath(__file__))
 FILE_DATABASE = os.path.join(DIR_SAAT_INI, "database_proyek.json")
-FOLDER_FOTO = os.path.join(DIR_SAAT_INI, "foto_progres")
-
-if not os.path.exists(FOLDER_FOTO):
-    os.makedirs(FOLDER_FOTO)
 
 def simpan_database():
     with open(FILE_DATABASE, 'w') as f:
@@ -188,19 +180,17 @@ with st.sidebar:
 
     st.divider()
 
-    # --- FITUR EXPORT EXCEL (+ FOTO) ---
-    st.header("📊 Export Laporan (+ Foto)")
-    if st.button("Siapkan File Excel Lengkap"):
+    # --- FITUR EXPORT EXCEL (TANPA FOTO) ---
+    st.header("📊 Export Laporan")
+    if st.button("Siapkan File Excel"):
         data_untuk_excel = []
         for area, dict_pekerjaan in st.session_state.database_tasks.items():
             for pekerjaan, dict_printilan in dict_pekerjaan.items():
 
-                # Perhitungan Progres Rata-rata dari Slider
                 jumlah_printilan = len(dict_printilan)
                 if jumlah_printilan > 0:
                     total_progres = 0
                     for val in dict_printilan.values():
-                        # Keamanan: ubah True/False jadi angka 100/0 jika ada data lama
                         if isinstance(val, bool): val = 100 if val else 0
                         total_progres += val
                     progres_rata = (total_progres / (jumlah_printilan * 100))
@@ -219,54 +209,14 @@ with st.sidebar:
 
         if data_untuk_excel:
             df = pd.DataFrame(data_untuk_excel)
-            file_excel_temp = os.path.join(DIR_SAAT_INI, "Laporan_Temp.xlsx")
-            df.to_excel(file_excel_temp, index=False)
+            file_excel_final = os.path.join(DIR_SAAT_INI, "Laporan_Progres_Final.xlsx")
+            df.to_excel(file_excel_final, index=False)
 
             try:
-                wb = openpyxl.load_workbook(file_excel_temp)
-                ws = wb.active
-
-                ws.cell(row=1, column=8, value="Dokumentasi (Foto)")
-                ws.column_dimensions['H'].width = 25
-
-                daftar_foto = os.listdir(FOLDER_FOTO)
-
-                for row_idx, row_data in enumerate(data_untuk_excel, start=2):
-                    area = row_data["Area"]
-                    pekerjaan = row_data["Pekerjaan Utama"]
-                    item_printilan = row_data["Item Printilan"]
-
-                    if item_printilan == "-":
-                        ws.row_dimensions[row_idx].height = 80
-                        prefix = f"{area}_{pekerjaan}_".replace(" ", "_")
-                        foto_ditemukan = None
-
-                        for f in daftar_foto:
-                            if f.startswith(prefix):
-                                foto_ditemukan = os.path.join(FOLDER_FOTO, f)
-                                break
-
-                        if foto_ditemukan:
-                            try:
-                                img_pil = PILImage.open(foto_ditemukan)
-                                if img_pil.mode != 'RGB':
-                                    img_pil = img_pil.convert('RGB')
-                                img_pil.thumbnail((150, 100))
-                                img_byte_arr = io.BytesIO()
-                                img_pil.save(img_byte_arr, format='JPEG')
-                                img_xl = OpenPyxlImage(img_byte_arr)
-                                ws.add_image(img_xl, f"H{row_idx}")
-                            except Exception as e:
-                                pass
-
-                file_excel_final = os.path.join(DIR_SAAT_INI, "Laporan_Progres_Final.xlsx")
-                wb.save(file_excel_final)
-
                 with open(file_excel_final, "rb") as f:
-                    st.download_button(label="📥 Unduh Excel (+ Foto)", data=f, file_name=f"Laporan_Lengkap_{datetime.now().strftime('%Y%m%d')}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
-
+                    st.download_button(label="📥 Unduh Excel", data=f, file_name=f"Laporan_Lengkap_{datetime.now().strftime('%Y%m%d')}.xlsx", mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
             except Exception as e:
-                st.error(f"Gagal memproses foto ke Excel: {e}")
+                st.error(f"Gagal menyiapkan unduhan: {e}")
 
 
 # ============================================================
@@ -341,16 +291,6 @@ else:
                                 on_change=update_status
                             )
 
-                st.write("---")
-                with st.form(f"form_foto_{main_task}", clear_on_submit=True):
-                    foto_file = st.file_uploader("📸 Upload Foto Dokumentasi", type=["jpg", "png", "jpeg"])
-                    submit_foto = st.form_submit_button("Simpan Foto")
-                    if submit_foto and foto_file:
-                        nama_file = f"{area_terpilih}_{main_task}_{foto_file.name}".replace(" ", "_")
-                        path_simpan = os.path.join(FOLDER_FOTO, nama_file)
-                        with open(path_simpan, "wb") as f:
-                            f.write(foto_file.getbuffer())
-                        st.success("✅ Foto tersimpan!")
 
 # ==========================================
 # 4. GENERATOR LAPORAN WHATSAPP
