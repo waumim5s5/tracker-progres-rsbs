@@ -88,7 +88,6 @@ with st.sidebar:
                     printilan_baru = st.text_input("Nama Printilan")
                     if st.form_submit_button("Tambah Printilan") and printilan_baru:
                         if printilan_baru not in st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan]:
-                            # DISINI DIUBAH: Default progress printilan adalah angka 0, bukan False
                             st.session_state.database_tasks[pilih_area_2][pilih_pekerjaan][printilan_baru] = 0
                             simpan_database()
                             st.success("Berhasil! Refresh halaman.")
@@ -297,26 +296,6 @@ else:
         for main_task, sub_tasks in pekerjaan_utama_dict.items():
             with st.expander(f"🛠️ {main_task}", expanded=True):
 
-                kunci_tukang = f"{area_terpilih}_{main_task}_tukang"
-                kunci_peladen = f"{area_terpilih}_{main_task}_peladen"
-
-                tukang_saat_ini = st.session_state.database_workers.get(kunci_tukang, "")
-                peladen_saat_ini = st.session_state.database_workers.get(kunci_peladen, "")
-
-                def simpan_tukang(k=kunci_tukang):
-                    st.session_state.database_workers[k] = st.session_state[f"input_tukang_{k}"]
-                    simpan_database()
-
-                def simpan_peladen(k=kunci_peladen):
-                    st.session_state.database_workers[k] = st.session_state[f"input_peladen_{k}"]
-                    simpan_database()
-
-                col_t, col_p = st.columns(2)
-                with col_t:
-                    st.text_input("👷 Nama Tukang:", value=tukang_saat_ini, key=f"input_tukang_{kunci_tukang}", on_change=simpan_tukang, placeholder="Ketik nama & Enter")
-                with col_p:
-                    st.text_input("👷‍♂️ Nama Peladen:", value=peladen_saat_ini, key=f"input_peladen_{kunci_peladen}", on_change=simpan_peladen, placeholder="Ketik nama & Enter")
-
                 if not sub_tasks:
                     st.write("Belum ada checklist.")
                 else:
@@ -331,7 +310,7 @@ else:
                     persentase = int(total_skor / total_printilan) if total_printilan > 0 else 0
 
                     st.progress(persentase / 100)
-                    st.markdown(f"Progres Pekerjaan: {persentase}%")
+                    st.markdown(f"**Progres Pekerjaan: {persentase}%**")
                     st.write("---")
 
                     # === UPDATE: LOOP UNTUK SLIDER PRINTILAN ===
@@ -382,12 +361,12 @@ st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil geser slider Anda.
 
 def generate_wa_text():
     lines = []
-    lines.append("ITEM PEKERJAAN DAN PROGRES")
+    lines.append("*ITEM PEKERJAAN DAN PROGRES*")
     lines.append("")
 
     area_idx = 1
     for area, dict_pekerjaan in st.session_state.database_tasks.items():
-        lines.append(f"{area_idx}. {area}")
+        lines.append(f"{area_idx}. *{area}*")
 
         for pekerjaan, dict_printilan in dict_pekerjaan.items():
             jumlah_printilan = len(dict_printilan)
@@ -408,7 +387,7 @@ def generate_wa_text():
             if jumlah_printilan == 0:
                 lines.append(f"👷🏻‍♂️ Pekerjaan {pekerjaan}{pekerja_info} ({persen}%)")
             else:
-                lines.append(f"• {pekerjaan}{pekerja_info} ({persen}%)")
+                lines.append(f"• *{pekerjaan}*{pekerja_info} ({persen}%)")
 
             prin_idx = 1
             for printilan, val in dict_printilan.items():
@@ -416,7 +395,7 @@ def generate_wa_text():
                 status_simbol = "✅" if val == 100 else ""
 
                 # Menampilkan angka % di sebelah nama printilan
-                lines.append(f" {prin_idx}. {printilan} ({val}%){status_simbol}")
+                lines.append(f"   {prin_idx}. {printilan} ({val}%){status_simbol}")
                 prin_idx += 1
 
         lines.append("")
