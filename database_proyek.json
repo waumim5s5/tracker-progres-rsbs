@@ -16,10 +16,10 @@
       },
       "pemasangan dinding bata hebel": {
         "pemasangan": 100,
-        "plaster dinding": 95,
+        "plaster dinding": 100,
         "plamir dinding": 95,
-        "cat dinding": 85,
-        "benangan luar dan finishing": 50
+        "cat dinding": 95,
+        "benangan luar dan finishing": 95
       },
       "Pekerjaan  boven": {
         "Benangan Boven": 100
@@ -48,6 +48,10 @@
         "cat": 100,
         "pemasangan penutup balok WF (pake kalsi)": 100,
         "pemasangan penutup kanopi": 0
+      },
+      "kramik": {
+        "bongkar": 100,
+        "pasang": 100
       }
     },
     "Lantai 2": {
@@ -56,12 +60,12 @@
       },
       "Pemasangan Rangka Plafon PVC": {
         "Proses pemasangan": 100,
-        "plafon": 45
+        "plafon": 65
       },
       "pemasangan dinding bata hebel": {
         "pemasangan": 100,
         "plaster dinding": 100,
-        "cat dinding": 65,
+        "cat dinding": 85,
         "pembuatan balok latei/rolag": 100,
         "plamir dinding": 100,
         "plaster dinding luar": 100,
@@ -79,7 +83,7 @@
         "pemasangan rangka": 100,
         "pemotongan kalsi": 100,
         "pemasangan kalsi": 95,
-        "plamir kalsi": 85,
+        "plamir kalsi": 95,
         "pengecatan kalsi": 85
       },
       "kramik lantai": {
@@ -87,7 +91,7 @@
         "finishing": 0
       },
       "pasang lampu": {
-        "LED Downlight": 40
+        "LED Tube 18 wat": 90
       },
       "partisi penutup pipa": {
         "rangka": 0,
@@ -291,7 +295,8 @@
       "pembuatan neon box": {
         "neonbox 2": 100,
         "neonbox 3": 10,
-        "neonbox 1": 100
+        "neonbox 1": 100,
+        "neonbox klinikku": 20
       },
       "pemasangan talang di atas gym": {
         "selatan": 100,
