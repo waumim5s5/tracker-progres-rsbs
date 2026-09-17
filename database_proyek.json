@@ -9,7 +9,7 @@
       },
       "rangka plafon": {
         "rangka": 100,
-        "plafon": 0,
+        "plafon": 100,
         "pemasangan lisplang": 100,
         "pengecatan lisplang": 100,
         "plamir lisplang": 100
@@ -17,8 +17,8 @@
       "pemasangan dinding bata hebel": {
         "pemasangan": 100,
         "plaster dinding": 100,
-        "plamir dinding": 95,
-        "cat dinding": 95,
+        "plamir dinding": 100,
+        "cat dinding": 100,
         "benangan luar dan finishing": 95
       },
       "Pekerjaan  boven": {
@@ -34,7 +34,7 @@
         "pemasangan kalsi": 100,
         "pemotongan kalsi": 100,
         "plamir kalsi": 100,
-        "pengecatan kalsi": 85
+        "pengecatan kalsi": 100
       },
       "pembongkaran dinding": {
         "bongkar": 100,
@@ -52,6 +52,9 @@
       "kramik": {
         "bongkar": 100,
         "pasang": 100
+      },
+      "pemasangan lampu": {
+        "LED downlight": 100
       }
     },
     "Lantai 2": {
@@ -60,14 +63,14 @@
       },
       "Pemasangan Rangka Plafon PVC": {
         "Proses pemasangan": 100,
-        "plafon": 65
+        "plafon": 95
       },
       "pemasangan dinding bata hebel": {
         "pemasangan": 100,
         "plaster dinding": 100,
         "cat dinding": 85,
         "pembuatan balok latei/rolag": 100,
-        "plamir dinding": 100,
+        "plamir dinding": 85,
         "plaster dinding luar": 100,
         "plamir dinding luar": 100
       },
@@ -83,12 +86,12 @@
         "pemasangan rangka": 100,
         "pemotongan kalsi": 100,
         "pemasangan kalsi": 95,
-        "plamir kalsi": 95,
+        "plamir kalsi": 100,
         "pengecatan kalsi": 85
       },
       "kramik lantai": {
-        "pemasangan": 85,
-        "finishing": 0
+        "pemasangan": 95,
+        "finishing": 90
       },
       "pasang lampu": {
         "LED Tube 18 wat": 90
@@ -282,7 +285,9 @@
         "Pekerjaan plester lantai": 100,
         "Pemasangan pipa air & keran": 100,
         "Palmir dinding kalsi": 100,
-        "Pengecat an lantai kamar mandi": 100
+        "Pengecat an lantai kamar mandi": 100,
+        "pembuatan box besi": 100,
+        "pembuatan begel untuk kolom dinding lt 2": 90
       }
     },
     "luar area proyrk": {
@@ -290,13 +295,14 @@
         "pemotongan besi": 100,
         "pengangkutan besi": 100,
         "pengangkutan neon box": 100,
-        "pemasangan neon box": 100
+        "pemasangan neon box": 100,
+        "lantai 4 atas ruang aulia": 50
       },
       "pembuatan neon box": {
         "neonbox 2": 100,
         "neonbox 3": 10,
         "neonbox 1": 100,
-        "neonbox klinikku": 20
+        "neonbox klinikku": 95
       },
       "pemasangan talang di atas gym": {
         "selatan": 100,
