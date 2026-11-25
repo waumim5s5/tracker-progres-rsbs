@@ -1,4 +1,4 @@
-5{
+{
   "tasks": {
     "Lantai 1": {
       "LAHAN SAMPING": {
@@ -98,4 +98,117 @@
         "pekerjaan pemasangan granit": 100,
         "pekerjaan plamir dan pengecatan dinding": 100,
         "pemasangan instalasi pipa kamar mandi": 50,
-        "pemasangan keramik KM"
+        "pemasangan keramik KM": 20,
+        "pemasangan jalur gas dan vaccum": 50,
+        "pekerjaan pengecatan kusen pintu jendela": 0
+      },
+      "IGD": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan plamir dan pengecatan dinding": 85,
+        "pemasangan jalur gas dan vaccum": 50,
+        "pekerjaan pengecatan kusen pintu jendela": 0
+      },
+      "RUANG ANAK LT 1": {
+        "pekerjaan pemasangan granit": 0,
+        "pekerjaan plamir dan pengecatan dinding": 0,
+        "pekerjaan pengecatan kusen pintu jendela": 0
+      },
+      "RUANG OK": {}
+    },
+    "Lantai 2": {
+      "Ruang anak": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan benangan kusen km": 100,
+        "pekerjaan pemasangan pintu": 100,
+        "pekerjaan plamir dan pengecatan kusen": 0,
+        "pekerjaan plamir dan pengecatan dinding": 0
+      },
+      "RG": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan benangan kusen km": 100,
+        "pekerjaan plamir dan pengecatan kusen km": 100,
+        "pekerjaan pemasangan pintu": 100,
+        "pekerjaan pengecatan dinding": 0
+      },
+      "RI bedah": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan benangan kusen km": 100,
+        "pekerjaan plamir dan pengecatan kusen km": 0,
+        "pekerjaan pemasangan pintu": 100,
+        "pekerjaan pengecatan dinding": 0,
+        "pemasangan genteng atap": 85,
+        "palfon PVC": 90
+      },
+      "Dapur / Instalasi Gizi": {
+        "pekerjaan pemasangan granit": 95,
+        "pekerjaan pengecatan dinding": 0,
+        "pintu": 0
+      },
+      "Selasar dapur": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan perbaikan plafond": 50,
+        "pekerjaan pengecatan dinding": 0,
+        "pintu": 0
+      },
+      "RI Penyakit dalam": {
+        "pekerja pemasangan granit": 100,
+        "pekerjaan pengecatan dinding": 0,
+        "pekerjaan pemasangan atap": 100,
+        "pemasangan rangka plafond": 100,
+        "pemasangan AC": 100
+      },
+      "RI jantung": {
+        "pekerja pemasangan granit": 100,
+        "pekerjaan pengecatan dinding": 95,
+        "pekerjaan benangan kusen km": 100,
+        "pekerjaan plamir dan pengecatan kusen km": 100,
+        "lampu": 100,
+        "AC": 100,
+        "pintu": 100
+      },
+      "ICU": {
+        "pekerja pemasangan granit": 100,
+        "pekerjaan pengecatan dinding": 0,
+        "pekerjaan benangan kusen km": 100,
+        "pekerjaan plamir dan pengecatan kusen km": 0,
+        "AC": 100
+      },
+      "Nursestation": {
+        "pekerjaan pemasangan granit": 100,
+        "pekerjaan pengecatan dinding": 0
+      },
+      "RI syaraf": {
+        "pekerjaan pemasangan granit": 50,
+        "pekerjaan pengecatan dinding": 0,
+        "pintu": 0,
+        "AC": 100
+      },
+      "Ruang Isolasi": {
+        "pekerjaan pemasangan granit": 0,
+        "pekerjaan pengecatan dinding": 0,
+        "AC": 0,
+        "pintu": 0
+      },
+      "R.isolasi saraf": {
+        "pintu": 100,
+        "cat dinding": 0,
+        "granit": 100,
+        "AC": 0
+      },
+      "Genset": {
+        "pekerjaan paving": 100,
+        "pekerjaan atap": 100
+      },
+      "Area TPS": {
+        "Pekerjaan partisi": 100,
+        "Pekerjaan atap": 100,
+        "rabatan lantai": 50,
+        "pekerjaan saluran air kotor dan avur": 0,
+        "pekerjaan saluran air bersih": 0,
+        "pembuatan rangka pintu": 0,
+        "pemasangan rangka pintu dan jendela": 0
+      }
+    }
+  },
+  "workers": {}
+}
