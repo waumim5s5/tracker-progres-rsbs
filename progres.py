@@ -218,7 +218,6 @@ with st.sidebar:
             except Exception as e:
                 st.error(f"Gagal menyiapkan unduhan: {e}")
 
-
 # ============================================================
 # 3. HALAMAN UTAMA (TRACKER)
 # ============================================================
@@ -236,20 +235,42 @@ else:
         daftar_area,
         key="ingat_area"
     )
-    st.divider()
 
     pekerjaan_utama_dict = st.session_state.database_tasks[area_terpilih]
 
     if not pekerjaan_utama_dict:
         st.warning(f"Belum ada pekerjaan di area {area_terpilih}.")
     else:
-        for main_task, sub_tasks in pekerjaan_utama_dict.items():
+        # --- NAVIGASI CEPAT (ANCHOR LINKS) ---
+        st.markdown("**⚡ Navigasi Cepat Pekerjaan:**")
+        nav_links = []
+        for idx, (main_task, sub_tasks) in enumerate(pekerjaan_utama_dict.items()):
+            # Hitung persentase ringkas untuk badge navigasi
+            total_p = len(sub_tasks)
+            skor_p = sum((100 if v else 0) if isinstance(v, bool) else v for v in sub_tasks.values())
+            persen_nav = int(skor_p / total_p) if total_p > 0 else 0
+            ikon = "✅" if (total_p > 0 and persen_nav == 100) else "🔹"
+            
+            anchor_id = f"pek-{idx}"
+            nav_links.append(
+                f"<a href='#{anchor_id}' style='text-decoration:none; background-color:#f0f2f6; color:#31333F; "
+                f"padding:6px 12px; border-radius:8px; margin:4px; display:inline-block; font-size:14px; "
+                f"border:1px solid #dcdcdc;'>{ikon} <b>{main_task}</b> ({persen_nav}%)</a>"
+            )
+        
+        st.markdown("".join(nav_links), unsafe_allow_html=True)
+        st.divider()
+
+        # --- DAFTAR KARTU PEKERJAAN ---
+        for idx, (main_task, sub_tasks) in enumerate(pekerjaan_utama_dict.items()):
+            # Target jangkar (anchor) untuk auto-scroll
+            st.markdown(f"<div id='pek-{idx}'></div>", unsafe_allow_html=True)
+            
             with st.expander(f"🛠️ {main_task}", expanded=True):
 
                 if not sub_tasks:
                     st.write("Belum ada checklist.")
                 else:
-                    # Menghitung Rata-Rata Progres dari Slider Printilan
                     total_printilan = len(sub_tasks)
                     total_skor = 0
 
@@ -263,10 +284,7 @@ else:
                     st.markdown(f"**Progres Pekerjaan: {persentase}%**")
                     st.write("---")
 
-                    # === UPDATE: LOOP UNTUK SLIDER PRINTILAN ===
                     for printilan, val in sub_tasks.items():
-
-                        # Pengaman jika database lama terbaca bool (True/False)
                         if isinstance(val, bool):
                             val = 100 if val else 0
                             st.session_state.database_tasks[area_terpilih][main_task][printilan] = val
@@ -290,6 +308,9 @@ else:
                                 key=unik_key,
                                 on_change=update_status
                             )
+            
+            # Tombol kecil untuk kembali ke atas
+            st.markdown("<div style='text-align:right;'><a href='#aplikasi-tracker-progres-proyek' style='font-size:12px; color:gray; text-decoration:none;'>⬆️ Kembali ke atas</a></div>", unsafe_allow_html=True)
 
 
 # ==========================================
