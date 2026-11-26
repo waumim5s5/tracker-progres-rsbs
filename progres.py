@@ -322,47 +322,39 @@ st.write("Teks di bawah ini dibuat otomatis berdasarkan hasil geser slider Anda.
 
 def generate_wa_text():
     lines = []
-    lines.append("*ITEM PEKERJAAN DAN PROGRES*")
+    lines.append("*List pekerjaan RS REFA*")
     lines.append("")
+    lines.append("*ITEM PEKERJAAN*")
 
-    area_idx = 1
     for area, dict_pekerjaan in st.session_state.database_tasks.items():
-        lines.append(f"{area_idx}. *{area}*")
+        # Nama Area (misal: *Lantai 1*)
+        lines.append(f"*{area}*")
 
         for pekerjaan, dict_printilan in dict_pekerjaan.items():
-            jumlah_printilan = len(dict_printilan)
-
-            # Hitung persentase utama dari slider anak
-            if jumlah_printilan > 0:
-                total_skor = 0
-                for v in dict_printilan.values():
-                    if isinstance(v, bool): v = 100 if v else 0
-                    total_skor += v
-                persen = int(total_skor / jumlah_printilan)
-            else:
-                persen = 0
-
-            nama_tukang = st.session_state.database_workers.get(f"{area}_{pekerjaan}_tukang", "")
-            pekerja_info = f" ({nama_tukang})" if nama_tukang else ""
-
-            if jumlah_printilan == 0:
-                lines.append(f"👷🏻‍♂️ Pekerjaan {pekerjaan}{pekerja_info} ({persen}%)")
-            else:
-                lines.append(f"• *{pekerjaan}*{pekerja_info} ({persen}%)")
+            # Nama Pekerjaan Utama / Ruangan (misal: *LAHAN SAMPING*)
+            lines.append(f"*{pekerjaan}*")
 
             prin_idx = 1
             for printilan, val in dict_printilan.items():
-                if isinstance(val, bool): val = 100 if val else 0
-                status_simbol = "✅" if val == 100 else ""
+                if isinstance(val, bool):
+                    val = 100 if val else 0
 
-                # Menampilkan angka % di sebelah nama printilan
-                lines.append(f"   {prin_idx}. {printilan} ({val}%){status_simbol}")
+                # Jika 100% pakai ✅ tanpa tulisan 100%, jika < 100% tulis angkanya (misal: 70% atau 0%)
+                if val == 100:
+                    lines.append(f"{prin_idx}. {printilan} ✅")
+                else:
+                    lines.append(f"{prin_idx}. {printilan} {val}%")
+                
                 prin_idx += 1
 
-        lines.append("")
-        area_idx += 1
+            # Baris kosong antar ruangan / pekerjaan utama
+            lines.append("")
 
-    return "\n".join(lines)
+        # Baris kosong tambahan antar lantai/area
+        lines.append("")
+
+    # Menghapus baris kosong berlebih di bagian paling bawah
+    return "\n".join(lines).strip()
 
 if st.session_state.database_tasks:
     teks_laporan_wa = generate_wa_text()
