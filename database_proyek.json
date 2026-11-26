@@ -21,7 +21,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Apotek": {
         "dedel kusen bekas kaca": 100,
@@ -38,7 +39,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Poli obgyn": {
         "pekerjaan pemasangan partisi": 100,
@@ -51,7 +53,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Poli dalam": {
         "pekerjaan pemasangan partisi": 100,
@@ -63,7 +66,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R. Poli bedah": {
         "pekerjaan benanagan balok gantung": 100,
@@ -75,7 +79,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Fisioterapi": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -86,7 +91,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Laboratorium": {
         "wastafel selang belum terpasang": 100,
@@ -98,7 +104,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Radiologi": {
         "pengrapian kabel": 100,
@@ -113,7 +120,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Poli anak": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -124,7 +132,8 @@
         "pengecatan dinding": 100,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R. Maternal kls 1 (1 kamar, 1 bedhead, 1 bed)": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -145,7 +154,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R. Maternal kls 2 (1) (1 kamar, 1 bedhead, 1 bed)": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -166,7 +176,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R. Maternal kls 2 (2) (1 kamar, 1 bedhead, 1 bed)": {
         "pekerjaan instalasi pipa": 100,
@@ -188,7 +199,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Penerimaan OK": {
         "plamir dinding": 0,
@@ -202,7 +214,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Kamar Operasi (1 kamar, 1 bedhead, 1 bed)": {
         "plamir dinding": 0,
@@ -218,7 +231,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Recovery Room (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -234,7 +248,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "CSSD": {
         "plamir dinding": 0,
@@ -244,7 +259,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Sterilisator": {
         "plamir dinding": 0,
@@ -254,7 +270,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.anak (1 kamar, 4 bedhead, 4 bed)": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -275,7 +292,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Jenazah": {
         "plamir dinding": 0,
@@ -285,7 +303,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Perinatologi (1 kamar, 6 bedhead, 6 bed)": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -302,7 +321,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.bersalin": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -319,7 +339,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Ponek (1 kamar, 1 bedhead, 1 bed)": {
         "plamir dinding": 0,
@@ -335,7 +356,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.sebelah ponek (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -351,7 +373,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "IGD lvl 1,2,3 (1 kamar, 4 bedhead, 4 bed)": {
         "pekerjaan pengecatan kusen pintu jendela": 0,
@@ -372,7 +395,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Triage (1 kamar, 1 bedhead, 1 bed)": {
         "plamir dinding": 0,
@@ -388,7 +412,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       }
     },
     "Lantai 2": {
@@ -411,7 +436,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "RI.Maternal 2 (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -431,7 +457,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "RI.Maternal 1 (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -451,7 +478,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "RI. Penyakit Dalam (1 kamar, 6 bedhead, 6 bed)": {
         "pekerjaan pemasangan atap": 100,
@@ -473,7 +501,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "selasar gizi": {
         "plamir dinding": 0,
@@ -483,7 +512,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Instalasi Gizi": {
         "plamir dinding": 0,
@@ -493,7 +523,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Isolasi saraf (1 kamar, 2 bedhead, 1 bed)": {
         "plamir dinding": 0,
@@ -513,7 +544,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Bedah 1 (1 kamar, 2 bedhead, 2 bed)": {
         "pemasangan genteng atap": 85,
@@ -534,7 +566,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Bedah 2 (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -554,7 +587,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Isolasi (3 kamar, 8 bedhead, 8 bed)": {
         "plamir dinding": 0,
@@ -574,7 +608,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Nursestation R.isolasi": {
         "plamir dinding": 0,
@@ -584,7 +619,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.menejemen": {
         "plamir dinding": 0,
@@ -598,7 +634,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.Saraf (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -618,7 +655,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.jantung (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -638,7 +676,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.NICU (1 kamar, 2 bedhead, 2 bed)": {
         "plamir dinding": 0,
@@ -658,7 +697,8 @@
         "pintu kamar mandi": 0,
         "kramik kamar mandi": 0,
         "perpipaan kamar mandi": 0,
-        "kloset & westafel": 0
+        "kloset & westafel": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "R.ICU (1 kamar, 4 bedhead, 4 bed)": {
         "plamir dinding": 0,
@@ -674,7 +714,8 @@
         "nursecall": 0,
         "kabel pencetan nursecall": 0,
         "stopkontak 4 pcs": 0,
-        "Cover Bedhead": 0
+        "Cover Bedhead": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       },
       "Nursestation ICU": {
         "plamir dinding": 0,
@@ -684,7 +725,8 @@
         "pengecatan dinding": 0,
         "pemasangan pintu": 0,
         "pemasangan lampu": 0,
-        "pemasangan AC": 0
+        "pemasangan AC": 0,
+        "pekerjaan kelistrikan dan lampu": 0
       }
     }
   },
