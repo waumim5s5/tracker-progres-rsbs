@@ -13,202 +13,148 @@
       },
       "Ruang Panel": {
         "pekerjaan pemasangan herbel area panel": 100,
-        "pekerjaan plester dan plamir herbel area panel": 100
+        "pekerjaan plester dan plamir herbel area panel": 100,
+        "plamir dinding": 0,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 0,
+        "pengecatan dinding": 0,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "Apotek": {
-        "pekerjaan pemasangan granit": 100,
         "dedel kusen bekas kaca": 100,
         "pemasangan dan plester herbel": 100,
-        "pemasangan lampu": 100,
         "Acian dinding": 80,
-        "Pengecatan": 70
+        "plamir dinding": 0,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 70,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 100,
+        "pemasangan AC": 0
       },
       "R.Poli obgyn": {
         "pekerjaan pemasangan partisi": 100,
         "pekerjaan coumpond partisi": 100,
-        "pekerjaan pengecatan dinding": 100,
-        "pekerjan pengecatan kusen pintu jendela": 0
+        "pekerjan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 0,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 0,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R.Poli dalam": {
         "pekerjaan pemasangan partisi": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pekerjaan pengecatan dinding": 100,
-        "pekerjan pengecatan kusen pintu jendela": 0
+        "pekerjan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 0,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R. Poli bedah": {
         "pekerjaan benanagan balok gantung": 100,
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pekerjaan pengecatan dinding": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "Fisioterapi": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "Laboratorium": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
         "wastafel selang belum terpasang": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "Radiologi": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pengrapian kabel": 100
+        "pengrapian kabel": 100,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "Poli anak": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R. Maternal kls 1": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 80,
         "pemasangan keramik dinding dan lantai KM": 50,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 80,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 80,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R. Maternal kls 2 (1)": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
         "pemasangan keramik dinding dan lantai KM": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 0
+        "pekerjaan pengecatan kusen pintu jendela": 0,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R. Maternal kls 2 (2)": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan": 100,
         "pekerjaan instalasi pipa": 100,
         "pemasangan keramik dinding dan lantai KM": 100,
-        "pekerjaan pengecatan kusen pintu jendela": 100
+        "pekerjaan pengecatan kusen pintu jendela": 100,
+        "plamir dinding": 100,
+        "plamir kusen jendela": 0,
+        "pemasangan plafon": 0,
+        "pemasangan granit": 100,
+        "pengecatan dinding": 100,
+        "pemasangan pintu": 0,
+        "pemasangan lampu": 0,
+        "pemasangan AC": 0
       },
       "R. Perinatologi": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
         "pemasangan jalur gas dan vaccum": 0,
-        "pekerjaan pengecatan kusen pintu jendela": 0
-      },
-      "R. Bersalin": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pemasangan jalur gas dan vaccum": 30,
-        "pekerjaan pengecatan kusen pintu jendela": 0
-      },
-      "IGD lv 3": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 100,
-        "pemasangan instalasi pipa kamar mandi": 50,
-        "pemasangan keramik KM": 20,
-        "pemasangan jalur gas dan vaccum": 50,
-        "pekerjaan pengecatan kusen pintu jendela": 0
-      },
-      "IGD": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan plamir dan pengecatan dinding": 85,
-        "pemasangan jalur gas dan vaccum": 50,
-        "pekerjaan pengecatan kusen pintu jendela": 0
-      },
-      "RUANG ANAK LT 1": {
-        "pekerjaan pemasangan granit": 0,
-        "pekerjaan plamir dan pengecatan dinding": 0,
-        "pekerjaan pengecatan kusen pintu jendela": 0
-      },
-      "RUANG OK": {}
-    },
-    "Lantai 2": {
-      "Ruang anak": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan benangan kusen km": 100,
-        "pekerjaan pemasangan pintu": 100,
-        "pekerjaan plamir dan pengecatan kusen": 0,
-        "pekerjaan plamir dan pengecatan dinding": 0
-      },
-      "RG": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan benangan kusen km": 100,
-        "pekerjaan plamir dan pengecatan kusen km": 100,
-        "pekerjaan pemasangan pintu": 100,
-        "pekerjaan pengecatan dinding": 0
-      },
-      "RI bedah": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan benangan kusen km": 100,
-        "pekerjaan plamir dan pengecatan kusen km": 0,
-        "pekerjaan pemasangan pintu": 100,
-        "pekerjaan pengecatan dinding": 0,
-        "pemasangan genteng atap": 85,
-        "palfon PVC": 90
-      },
-      "Dapur / Instalasi Gizi": {
-        "pekerjaan pemasangan granit": 95,
-        "pekerjaan pengecatan dinding": 0,
-        "pintu": 0
-      },
-      "Selasar dapur": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan perbaikan plafond": 50,
-        "pekerjaan pengecatan dinding": 0,
-        "pintu": 0
-      },
-      "RI Penyakit dalam": {
-        "pekerja pemasangan granit": 100,
-        "pekerjaan pengecatan dinding": 0,
-        "pekerjaan pemasangan atap": 100,
-        "pemasangan rangka plafond": 100,
-        "pemasangan AC": 100
-      },
-      "RI jantung": {
-        "pekerja pemasangan granit": 100,
-        "pekerjaan pengecatan dinding": 95,
-        "pekerjaan benangan kusen km": 100,
-        "pekerjaan plamir dan pengecatan kusen km": 100,
-        "lampu": 100,
-        "AC": 100,
-        "pintu": 100
-      },
-      "ICU": {
-        "pekerja pemasangan granit": 100,
-        "pekerjaan pengecatan dinding": 0,
-        "pekerjaan benangan kusen km": 100,
-        "pekerjaan plamir dan pengecatan kusen km": 0,
-        "AC": 100
-      },
-      "Nursestation": {
-        "pekerjaan pemasangan granit": 100,
-        "pekerjaan pengecatan dinding": 0
-      },
-      "RI syaraf": {
-        "pekerjaan pemasangan granit": 50,
-        "pekerjaan pengecatan dinding": 0,
-        "pintu": 0,
-        "AC": 100
-      },
-      "Ruang Isolasi": {
-        "pekerjaan pemasangan granit": 0,
-        "pekerjaan pengecatan dinding": 0,
-        "AC": 0,
-        "pintu": 0
-      },
-      "R.isolasi saraf": {
-        "pintu": 100,
-        "cat dinding": 0,
-        "granit": 100,
-        "AC": 0
-      },
-      "Genset": {
-        "pekerjaan paving": 100,
-        "pekerjaan atap": 100
-      },
-      "Area TPS": {
-        "Pekerjaan partisi": 100,
-        "Pekerjaan atap": 100,
-        "rabatan lantai": 50,
-        "pekerjaan saluran air kotor dan avur": 0,
-        "pekerjaan saluran air bersih": 0,
-        "pembuatan rangka pintu": 0,
-        "pemasangan rangka pintu dan jendela": 0
-      }
-    }
-  },
-  "workers": {}
-}
+        "pekerja"
